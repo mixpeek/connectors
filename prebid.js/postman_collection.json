@@ -1,0 +1,371 @@
+{
+  "info": {
+    "name": "Mixpeek Context API - Prebid Integration",
+    "description": "API collection for testing Mixpeek Context Adapter functionality",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "version": "1.0.0"
+  },
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{MIXPEEK_API_KEY}}",
+        "type": "string"
+      }
+    ]
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "https://api.mixpeek.com",
+      "type": "string"
+    },
+    {
+      "key": "MIXPEEK_API_KEY",
+      "value": "your_api_key_here",
+      "type": "string"
+    },
+    {
+      "key": "namespace",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "collectionId",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "documentId",
+      "value": "",
+      "type": "string"
+    }
+  ],
+  "item": [
+    {
+      "name": "Health",
+      "item": [
+        {
+          "name": "Health Check",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/v1/health",
+              "host": ["{{baseUrl}}"],
+              "path": ["v1", "health"]
+            },
+            "description": "Check Mixpeek API health status"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Collections",
+      "item": [
+        {
+          "name": "Create Collection",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "if (pm.response.code === 200) {",
+                  "    const response = pm.response.json();",
+                  "    pm.collectionVariables.set('collectionId', response.collection_id);",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "X-Namespace",
+                "value": "{{namespace}}",
+                "disabled": true
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"prebid-contextual\",\n  \"description\": \"Collection for Prebid contextual targeting\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/v1/collections",
+              "host": ["{{baseUrl}}"],
+              "path": ["v1", "collections"]
+            },
+            "description": "Create a new collection for contextual data"
+          }
+        },
+        {
+          "name": "Get Collection",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "X-Namespace",
+                "value": "{{namespace}}",
+                "disabled": true
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/v1/collections/{{collectionId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["v1", "collections", "{{collectionId}}"]
+            },
+            "description": "Get collection details"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Feature Extractors",
+      "item": [
+        {
+          "name": "List Feature Extractors",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/v1/collections/features/extractors",
+              "host": ["{{baseUrl}}"],
+              "path": ["v1", "collections", "features", "extractors"]
+            },
+            "description": "List all available feature extractors"
+          }
+        },
+        {
+          "name": "Get Feature Extractor",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/v1/collections/features/extractors/taxonomy",
+              "host": ["{{baseUrl}}"],
+              "path": ["v1", "collections", "features", "extractors", "taxonomy"]
+            },
+            "description": "Get details about a specific feature extractor"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Documents",
+      "item": [
+        {
+          "name": "Create Document - Page Content",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "if (pm.response.code === 200) {",
+                  "    const response = pm.response.json();",
+                  "    pm.collectionVariables.set('documentId', response.document_id);",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "X-Namespace",
+                "value": "{{namespace}}",
+                "disabled": true
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"object_id\": \"page_{{$randomUUID}}\",\n  \"metadata\": {\n    \"url\": \"https://example.com/article/mobile-phones\",\n    \"title\": \"Latest Mobile Phone Technology\",\n    \"timestamp\": {{$timestamp}}\n  },\n  \"features\": [\n    {\n      \"feature_extractor_id\": \"taxonomy\",\n      \"payload\": {\n        \"text\": \"The latest mobile phones feature advanced AI capabilities, 5G connectivity, and improved camera systems. Smartphones are becoming more powerful with each generation, offering better performance and longer battery life.\"\n      }\n    }\n  ]\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/v1/collections/{{collectionId}}/documents",
+              "host": ["{{baseUrl}}"],
+              "path": ["v1", "collections", "{{collectionId}}", "documents"]
+            },
+            "description": "Create a document with page content and extract taxonomy"
+          }
+        },
+        {
+          "name": "Create Document - Video Content",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "X-Namespace",
+                "value": "{{namespace}}",
+                "disabled": true
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"object_id\": \"video_{{$randomUUID}}\",\n  \"metadata\": {\n    \"url\": \"https://example.com/video/tech-review\",\n    \"title\": \"Mobile Phone Review\",\n    \"timestamp\": {{$timestamp}}\n  },\n  \"features\": [\n    {\n      \"feature_extractor_id\": \"taxonomy\",\n      \"payload\": {\n        \"video_url\": \"https://example.com/videos/mobile-review.mp4\",\n        \"title\": \"Latest Smartphone Review\",\n        \"description\": \"Comprehensive review of the newest mobile phones\"\n      }\n    }\n  ]\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/v1/collections/{{collectionId}}/documents",
+              "host": ["{{baseUrl}}"],
+              "path": ["v1", "collections", "{{collectionId}}", "documents"]
+            },
+            "description": "Create a document with video content"
+          }
+        },
+        {
+          "name": "Create Document - Multi-Feature",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "X-Namespace",
+                "value": "{{namespace}}",
+                "disabled": true
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"object_id\": \"article_{{$randomUUID}}\",\n  \"metadata\": {\n    \"url\": \"https://example.com/article/ai-technology\",\n    \"title\": \"AI in Mobile Devices\",\n    \"timestamp\": {{$timestamp}}\n  },\n  \"features\": [\n    {\n      \"feature_extractor_id\": \"taxonomy\",\n      \"payload\": {\n        \"text\": \"Artificial intelligence is revolutionizing mobile technology with smart assistants, camera enhancements, and predictive features.\"\n      }\n    },\n    {\n      \"feature_extractor_id\": \"keywords\",\n      \"payload\": {\n        \"text\": \"Artificial intelligence is revolutionizing mobile technology with smart assistants, camera enhancements, and predictive features.\"\n      }\n    }\n  ]\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/v1/collections/{{collectionId}}/documents",
+              "host": ["{{baseUrl}}"],
+              "path": ["v1", "collections", "{{collectionId}}", "documents"]
+            },
+            "description": "Create a document with multiple feature extractors"
+          }
+        },
+        {
+          "name": "Get Document",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "X-Namespace",
+                "value": "{{namespace}}",
+                "disabled": true
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/v1/collections/{{collectionId}}/documents/{{documentId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["v1", "collections", "{{collectionId}}", "documents", "{{documentId}}"]
+            },
+            "description": "Get document with enrichments"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Examples",
+      "item": [
+        {
+          "name": "Article - Technology",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status code is 200', function() {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test('Response has enrichments', function() {",
+                  "    const response = pm.response.json();",
+                  "    pm.expect(response).to.have.property('enrichments');",
+                  "});",
+                  "",
+                  "pm.test('Taxonomy enrichment exists', function() {",
+                  "    const response = pm.response.json();",
+                  "    pm.expect(response.enrichments).to.have.property('taxonomies');",
+                  "    pm.expect(response.enrichments.taxonomies).to.be.an('array');",
+                  "    pm.expect(response.enrichments.taxonomies.length).to.be.above(0);",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"object_id\": \"tech_article_001\",\n  \"metadata\": {\n    \"url\": \"https://techblog.com/ai-smartphones-2025\",\n    \"title\": \"AI-Powered Smartphones in 2025\",\n    \"category\": \"technology\"\n  },\n  \"features\": [\n    {\n      \"feature_extractor_id\": \"taxonomy\",\n      \"payload\": {\n        \"text\": \"The smartphone market in 2025 is dominated by AI-powered devices featuring advanced neural processors, computational photography, and intelligent battery management. Major manufacturers are focusing on on-device AI processing for enhanced privacy and faster response times. Voice assistants have become more contextually aware, and camera systems can recognize scenes in real-time to optimize settings automatically.\"\n      }\n    }\n  ]\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/v1/collections/{{collectionId}}/documents",
+              "host": ["{{baseUrl}}"],
+              "path": ["v1", "collections", "{{collectionId}}", "documents"]
+            }
+          }
+        },
+        {
+          "name": "Article - Automotive",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"object_id\": \"auto_article_001\",\n  \"metadata\": {\n    \"url\": \"https://carblog.com/electric-vehicles-2025\",\n    \"title\": \"Electric Vehicle Revolution\",\n    \"category\": \"automotive\"\n  },\n  \"features\": [\n    {\n      \"feature_extractor_id\": \"taxonomy\",\n      \"payload\": {\n        \"text\": \"Electric vehicles are transforming the automotive industry with improved battery technology, longer range, and faster charging. Hybrid models continue to bridge the gap for consumers, while fully electric SUVs are gaining popularity. Automotive manufacturers are investing heavily in EV infrastructure and sustainable manufacturing processes.\"\n      }\n    }\n  ]\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/v1/collections/{{collectionId}}/documents",
+              "host": ["{{baseUrl}}"],
+              "path": ["v1", "collections", "{{collectionId}}", "documents"]
+            }
+          }
+        },
+        {
+          "name": "Article - Finance",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"object_id\": \"finance_article_001\",\n  \"metadata\": {\n    \"url\": \"https://financetoday.com/investment-strategies\",\n    \"title\": \"Investment Strategies for 2025\",\n    \"category\": \"finance\"\n  },\n  \"features\": [\n    {\n      \"feature_extractor_id\": \"taxonomy\",\n      \"payload\": {\n        \"text\": \"Smart investment strategies for 2025 focus on diversification across stocks, bonds, and alternative assets. Financial advisors recommend balancing risk with long-term growth potential. Digital banking and robo-advisors are making wealth management more accessible to retail investors.\"\n      }\n    }\n  ]\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/v1/collections/{{collectionId}}/documents",
+              "host": ["{{baseUrl}}"],
+              "path": ["v1", "collections", "{{collectionId}}", "documents"]
+            }
+          }
+        }
+      ]
+    }
+  ]
+}
+

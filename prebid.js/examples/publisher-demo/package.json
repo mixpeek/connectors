@@ -1,0 +1,11 @@
+{
+  "name": "mixpeek-prebid-demo",
+  "version": "1.0.0",
+  "description": "Publisher demo for Mixpeek Context Adapter",
+  "scripts": {
+    "start": "npx http-server -p 8080 -o"
+  },
+  "dependencies": {},
+  "devDependencies": {}
+}
+

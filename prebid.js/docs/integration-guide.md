@@ -346,6 +346,8 @@ pbjs.que.push(function() {
 
 The adapter injects the following targeting keys into your ad requests:
 
+### Current Page Context
+
 | Key | Description | Example |
 |-----|-------------|---------|
 | `hb_mixpeek_taxonomy` | IAB taxonomy code | `IAB12-6` |
@@ -358,9 +360,20 @@ The adapter injects the following targeting keys into your ad requests:
 | `hb_mixpeek_sentiment` | Content sentiment | `positive` |
 | `hb_mixpeek_embed` | Embedding ID | `emb_abc123` |
 
+### Previous Ad Context (Adjacency Awareness)
+
+| Key | Description | Example |
+|-----|-------------|---------|
+| `hb_mixpeek_prev_creative` | Last creative ID shown | `12345` |
+| `hb_mixpeek_prev_bidder` | Last winning bidder | `appnexus` |
+| `hb_mixpeek_prev_adunit` | Last ad unit code | `sidebar-1` |
+| `hb_mixpeek_prev_cat` | Last ad categories | `IAB18-1,IAB12-3` |
+
 These keys are available to all bidders and can be used for:
-- Contextual targeting
+- Contextual targeting based on current page content
 - Brand safety filtering
+- Ad adjacency awareness and competitive separation
+- Frequency capping and rotation logic
 - Bid price optimization
 - Reporting and analytics
 

@@ -63,7 +63,12 @@ export const TARGETING_KEYS = {
   SAFETY: 'hb_mixpeek_safety',
   KEYWORDS: 'hb_mixpeek_keywords',
   EMBED: 'hb_mixpeek_embed',
-  SENTIMENT: 'hb_mixpeek_sentiment'
+  SENTIMENT: 'hb_mixpeek_sentiment',
+  // Previous ad context
+  PREV_AD_CREATIVE_ID: 'hb_mixpeek_prev_creative',
+  PREV_AD_BIDDER: 'hb_mixpeek_prev_bidder',
+  PREV_AD_ADUNIT: 'hb_mixpeek_prev_adunit',
+  PREV_AD_CAT: 'hb_mixpeek_prev_cat'
 }
 
 // Error Codes

@@ -11,6 +11,7 @@ The Mixpeek Contextual Adapter enables publishers and SSPs using **Prebid.js** t
 - **Multimodal Analysis**: Text, images, video, and audio processing
 - **IAB Taxonomy**: Automatic classification into IAB content categories
 - **Brand Safety**: Real-time brand safety scoring
+- **Ad Adjacency Awareness**: Tracks previous ad to avoid repetition and improve user experience
 - **Sub-100ms Performance**: Optimized for header bidding speed requirements
 - **Graceful Fallbacks**: Never blocks the auction
 
@@ -132,6 +133,7 @@ The RTD module injects contextual data into your bid requests using the OpenRTB 
 ### Impression-Level Data (`ortb2Imp.ext.data`)
 ```javascript
 {
+  // Current page context
   "hb_mixpeek_taxonomy": "IAB19-11",       // Primary IAB taxonomy code
   "hb_mixpeek_category": "Technology > AI", // Human-readable category
   "hb_mixpeek_node": "node_tech_ai",       // Taxonomy node ID
@@ -139,7 +141,13 @@ The RTD module injects contextual data into your bid requests using the OpenRTB 
   "hb_mixpeek_score": "0.94",              // Confidence score
   "hb_mixpeek_safety": "0.98",             // Brand safety score
   "hb_mixpeek_keywords": "AI,ML,tech",     // Extracted keywords
-  "hb_mixpeek_embed": "emb_abc123"         // Embedding ID for retrieval
+  "hb_mixpeek_embed": "emb_abc123",        // Embedding ID for retrieval
+  
+  // Previous ad context (adjacency awareness)
+  "hb_mixpeek_prev_creative": "12345",     // Last creative ID shown
+  "hb_mixpeek_prev_bidder": "appnexus",    // Last bidder that won
+  "hb_mixpeek_prev_adunit": "sidebar-1",   // Last ad unit code
+  "hb_mixpeek_prev_cat": "IAB18-1,IAB12-3" // Last ad categories
 }
 ```
 
@@ -308,6 +316,80 @@ pbjs.onEvent('mixpeekContextError', function(error) {
   console.error('Mixpeek context error:', error)
   // Custom error handling
 })
+```
+
+## 🔄 Previous Ad Tracking (Adjacency Awareness)
+
+The adapter automatically tracks the most recently served ad to enable adjacency-aware targeting. This helps:
+
+- **Avoid Ad Repetition**: Prevent showing the same creative or category repeatedly
+- **Frequency Capping**: Build frequency cap rules based on previous impressions
+- **Competitive Separation**: Avoid showing competing brands consecutively
+- **Enhanced User Experience**: Improve ad diversity and relevance
+
+### How It Works
+
+1. **Automatic Tracking**: On every `bidResponse` event, the adapter stores minimal information about the winning ad
+2. **Lightweight Storage**: Data is stored in memory + localStorage (privacy-safe, no PII)
+3. **Targeting Keys**: Previous ad data is automatically injected into subsequent bid requests
+
+### Data Tracked
+
+| Field | Description | Example |
+|-------|-------------|---------|
+| `creativeId` | Winning creative ID | `"12345"` |
+| `bidder` | Winning bidder code | `"appnexus"` |
+| `adUnitCode` | Ad unit that served the ad | `"sidebar-1"` |
+| `categories` | IAB categories of the ad | `["IAB18-1", "IAB12-3"]` |
+| `timestamp` | When the ad was served | `1697123456789` |
+
+### Targeting Keys Injected
+
+The following keys are automatically added to `ortb2Imp.ext.data`:
+
+- `hb_mixpeek_prev_creative` - Last creative ID
+- `hb_mixpeek_prev_bidder` - Last winning bidder
+- `hb_mixpeek_prev_adunit` - Last ad unit code
+- `hb_mixpeek_prev_cat` - Last ad categories (comma-separated)
+
+### SSP/DSP Usage
+
+SSPs and DSPs can use these keys for advanced targeting rules:
+
+```javascript
+// Example: Avoid showing the same creative twice in a row
+if (bidRequest.ortb2Imp.ext.data.hb_mixpeek_prev_creative === currentCreative.id) {
+  // Skip this creative or reduce bid
+}
+
+// Example: Competitive separation
+const prevCategories = bidRequest.ortb2Imp.ext.data.hb_mixpeek_prev_cat?.split(',') || []
+if (prevCategories.includes('IAB18-1') && currentAd.category === 'IAB18-1') {
+  // Don't show competing fashion ads back-to-back
+}
+```
+
+### Privacy & Storage
+
+- **No User Tracking**: Only ad metadata is stored, no user identifiers or behavior
+- **Session-Scoped**: Data persists across page views within a session
+- **Local Storage**: Falls back to memory-only if localStorage is unavailable
+- **Minimal Data**: Only essential fields are stored (< 200 bytes)
+- **GDPR/CCPA Compliant**: No consent required as it doesn't track users
+
+### Programmatic Control
+
+You can access the previous ad tracker directly if needed:
+
+```javascript
+import previousAdTracker from '@mixpeek/prebid-contextual-adapter/utils/previousAdTracker'
+
+// Get last ad info
+const lastAd = previousAdTracker.getLast()
+console.log('Last creative:', lastAd?.creativeId)
+
+// Clear history (e.g., on user logout or page type change)
+previousAdTracker.clear()
 ```
 
 ## 🔒 Security & Privacy

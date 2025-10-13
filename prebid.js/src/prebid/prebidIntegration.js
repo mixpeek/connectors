@@ -8,6 +8,7 @@
 
 import adapter from '../modules/mixpeekContextAdapter.js'
 import logger from '../utils/logger.js'
+import previousAdTracker from '../utils/previousAdTracker.js'
 
 /**
  * Register Mixpeek adapter with Prebid.js
@@ -58,6 +59,13 @@ export function registerWithPrebid() {
 
     // Hook into bidResponse to add analytics
     pbjs.onEvent('bidResponse', function(bidResponse) {
+      // Record previous ad for adjacency/frequency awareness
+      try {
+        previousAdTracker.record(bidResponse)
+      } catch (e) {
+        // non-blocking
+      }
+
       const context = adapter.getContextData()
       if (context) {
         // Add context data to bid response for analytics

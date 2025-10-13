@@ -1,5 +1,12 @@
 module.exports = {
   testEnvironment: 'jsdom',
+  transform: {
+    '^.+\\.js$': ['babel-jest', {
+      presets: [
+        ['@babel/preset-env', { targets: { node: 'current' } }]
+      ]
+    }]
+  },
   collectCoverageFrom: [
     'src/**/*.js',
     '!src/**/*.test.js',

@@ -293,6 +293,7 @@ Ad units are enriched with Mixpeek targeting keys:
   ortb2Imp: {
     ext: {
       data: {
+        // Current page context
         hb_mixpeek_taxonomy: string,    // IAB taxonomy code
         hb_mixpeek_category: string,    // Category label
         hb_mixpeek_node: string,        // Taxonomy node ID
@@ -301,7 +302,13 @@ Ad units are enriched with Mixpeek targeting keys:
         hb_mixpeek_safety: string,      // Brand safety score
         hb_mixpeek_keywords: string,    // Comma-separated keywords
         hb_mixpeek_sentiment: string,   // Sentiment label
-        hb_mixpeek_embed: string        // Embedding ID
+        hb_mixpeek_embed: string,       // Embedding ID
+        
+        // Previous ad context (adjacency awareness)
+        hb_mixpeek_prev_creative: string,  // Last creative ID
+        hb_mixpeek_prev_bidder: string,    // Last winning bidder
+        hb_mixpeek_prev_adunit: string,    // Last ad unit code
+        hb_mixpeek_prev_cat: string        // Last ad categories (comma-separated)
       }
     }
   },

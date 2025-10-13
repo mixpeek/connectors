@@ -28,6 +28,7 @@ import { extractPageContent, extractArticleContent, isArticlePage } from '../ext
 import { extractVideoContent, hasVideo, extractVideoPlayerInfo } from '../extractors/videoExtractor.js'
 import { extractImages, extractOGImage, hasImages } from '../extractors/imageExtractor.js'
 import { getIABFromTaxonomy, mapCategoriesToIAB, IAB_TAXONOMY_VERSION } from '../utils/iabMapping.js'
+import previousAdTracker from '../utils/previousAdTracker.js'
 
 class MixpeekContextAdapter {
   constructor() {
@@ -590,6 +591,23 @@ class MixpeekContextAdapter {
     // Embedding ID
     if (context.embeddingId) {
       keys[TARGETING_KEYS.EMBED] = context.embeddingId
+    }
+
+    // Previous ad targeting (non-PII, adjacency awareness)
+    const lastAd = previousAdTracker.getLast()
+    if (lastAd) {
+      if (lastAd.creativeId) {
+        keys[TARGETING_KEYS.PREV_AD_CREATIVE_ID] = String(lastAd.creativeId)
+      }
+      if (lastAd.bidder) {
+        keys[TARGETING_KEYS.PREV_AD_BIDDER] = String(lastAd.bidder)
+      }
+      if (lastAd.adUnitCode) {
+        keys[TARGETING_KEYS.PREV_AD_ADUNIT] = String(lastAd.adUnitCode)
+      }
+      if (Array.isArray(lastAd.categories) && lastAd.categories.length > 0) {
+        keys[TARGETING_KEYS.PREV_AD_CAT] = lastAd.categories.slice(0, 5).join(',')
+      }
     }
 
     return keys

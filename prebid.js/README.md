@@ -27,7 +27,7 @@ The Mixpeek Contextual Adapter enables publishers and SSPs using **Prebid.js** t
 USER → WEBSITE → PREBID.JS
                     │
                     ├──→ MIXPEEK Connector
-                    │    (Analyze page content)
+                    │    (Analyze page content + previous ad)
                     │    ↓
                     │    Returns: IAB cats, safety, keywords
                     │    ↓

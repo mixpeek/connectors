@@ -427,7 +427,7 @@ pbjs.setConfig({
 ### 2. Revert Package
 
 ```bash
-npm install @mixpeek/prebid-contextual-adapter@1.x
+npm install @mixpeek/prebid@1.x
 ```
 
 ### 3. Clear Cache
@@ -487,7 +487,7 @@ Need help with migration?
 
 - **Documentation:** [Full Integration Guide](integration-guide.md)
 - **Examples:** See `examples/` directory
-- **Issues:** [GitHub Issues](https://github.com/mixpeek/prebid-contextual-adapter/issues)
+- **Issues:** [GitHub Issues](https://github.com/mixpeek/prebid/issues)
 - **Email:** support@mixpeek.com
 - **Slack:** [Join our Slack](https://mixpeek.com/slack)
 

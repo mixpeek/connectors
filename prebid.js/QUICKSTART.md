@@ -217,7 +217,7 @@ testTimeout: 60000 // 60 seconds
 
 - **Documentation**: https://docs.mixpeek.com
 - **Email**: support@mixpeek.com
-- **GitHub Issues**: https://github.com/mixpeek/prebid-contextual-adapter/issues
+- **GitHub Issues**: https://github.com/mixpeek/prebid/issues
 
 ## What's Next?
 

@@ -147,7 +147,7 @@ This is the first stable release. No migration required.
 For questions, issues, or feature requests:
 
 - **Documentation**: https://docs.mixpeek.com
-- **GitHub Issues**: https://github.com/mixpeek/prebid-contextual-adapter/issues
+- **GitHub Issues**: https://github.com/mixpeek/prebid/issues
 - **Email**: support@mixpeek.com
 - **Slack**: https://mixpeek.com/slack
 

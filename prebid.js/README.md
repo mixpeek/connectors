@@ -1,7 +1,13 @@
 # Mixpeek Contextual Adapter for Prebid.js
 
+[![npm version](https://img.shields.io/npm/v/@mixpeek/prebid.svg)](https://www.npmjs.com/package/@mixpeek/prebid)
+[![npm downloads](https://img.shields.io/npm/dm/@mixpeek/prebid.svg)](https://www.npmjs.com/package/@mixpeek/prebid)
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
-[![npm version](https://badge.fury.io/js/%40mixpeek%2Fprebid-contextual-adapter.svg)](https://www.npmjs.com/package/@mixpeek/prebid-contextual-adapter)
+[![Node Version](https://img.shields.io/node/v/@mixpeek/prebid.svg)](https://www.npmjs.com/package/@mixpeek/prebid)
+[![Bundle Size](https://img.shields.io/bundlephobia/minzip/@mixpeek/prebid)](https://bundlephobia.com/package/@mixpeek/prebid)
+[![Dependencies](https://img.shields.io/librariesio/release/npm/@mixpeek/prebid)](https://www.npmjs.com/package/@mixpeek/prebid)
+[![GitHub Stars](https://img.shields.io/github/stars/mixpeek/prebid?style=social)](https://github.com/mixpeek/prebid)
+[![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](https://github.com/mixpeek/prebid/pulls)
 
 ## 🎯 Overview
 
@@ -20,14 +26,14 @@ The Mixpeek Contextual Adapter enables publishers and SSPs using **Prebid.js** t
 ### Installation
 
 ```bash
-npm install @mixpeek/prebid-contextual-adapter
+npm install @mixpeek/prebid
 ```
 
 ### Basic Setup
 
 ```javascript
 // 1. Include the Mixpeek RTD module
-import '@mixpeek/prebid-contextual-adapter'
+import '@mixpeek/prebid'
 
 // 2. Configure Mixpeek as an RTD provider
 pbjs.setConfig({
@@ -382,7 +388,7 @@ if (prevCategories.includes('IAB18-1') && currentAd.category === 'IAB18-1') {
 You can access the previous ad tracker directly if needed:
 
 ```javascript
-import previousAdTracker from '@mixpeek/prebid-contextual-adapter/utils/previousAdTracker'
+import previousAdTracker from '@mixpeek/prebid/utils/previousAdTracker'
 
 // Get last ad info
 const lastAd = previousAdTracker.getLast()
@@ -417,7 +423,7 @@ previousAdTracker.clear()
 ## 🤝 Support
 
 - **Email**: support@mixpeek.com
-- **GitHub Issues**: [Create an issue](https://github.com/mixpeek/prebid-contextual-adapter/issues)
+- **GitHub Issues**: [Create an issue](https://github.com/mixpeek/prebid/issues)
 - **Documentation**: [docs.mixpeek.com](https://docs.mixpeek.com)
 - **Slack Community**: [Join our Slack](https://mixpeek.com/slack)
 

@@ -1,7 +1,7 @@
 {
-  "name": "@mixpeek/prebid-contextual-adapter",
+  "name": "@mixpeek/prebid",
   "version": "1.0.0",
-  "description": "Mixpeek Contextual Adapter for Prebid.js - Enrich bid requests with real-time multimodal AI contextual data",
+  "description": "Mixpeek for Prebid.js - Enrich bid requests with real-time multimodal AI contextual data",
   "main": "dist/mixpeekContextAdapter.js",
   "module": "src/modules/mixpeekContextAdapter.js",
   "scripts": {
@@ -50,10 +50,10 @@
   "license": "Apache-2.0",
   "repository": {
     "type": "git",
-    "url": "https://github.com/mixpeek/prebid-contextual-adapter.git"
+    "url": "git+https://github.com/mixpeek/prebid.git"
   },
   "bugs": {
-    "url": "https://github.com/mixpeek/prebid-contextual-adapter/issues"
+    "url": "https://github.com/mixpeek/prebid/issues"
   },
   "homepage": "https://mixpeek.com",
   "peerDependencies": {

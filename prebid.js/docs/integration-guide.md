@@ -46,24 +46,24 @@ Before you begin, make sure you have:
 ### Option 1: NPM (Recommended)
 
 ```bash
-npm install @mixpeek/prebid-contextual-adapter
+npm install @mixpeek/prebid
 ```
 
 Then include in your JavaScript:
 
 ```javascript
-import '@mixpeek/prebid-contextual-adapter'
+import '@mixpeek/prebid'
 ```
 
 ### Option 2: CDN
 
 ```html
-<script src="https://cdn.jsdelivr.net/npm/@mixpeek/prebid-contextual-adapter@latest/dist/mixpeekContextAdapter.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@mixpeek/prebid@latest/dist/mixpeekContextAdapter.js"></script>
 ```
 
 ### Option 3: Download
 
-Download the latest release from [GitHub releases](https://github.com/mixpeek/prebid-contextual-adapter/releases) and include it in your page:
+Download the latest release from [GitHub releases](https://github.com/mixpeek/prebid/releases) and include it in your page:
 
 ```html
 <script src="/path/to/mixpeekContextAdapter.js"></script>
@@ -566,7 +566,7 @@ pbjs.setConfig({ mixpeek: {...} }); // Too early
 
 - **Documentation**: [docs.mixpeek.com](https://docs.mixpeek.com)
 - **Email**: support@mixpeek.com
-- **GitHub Issues**: [github.com/mixpeek/prebid-contextual-adapter/issues](https://github.com/mixpeek/prebid-contextual-adapter/issues)
+- **GitHub Issues**: [github.com/mixpeek/prebid/issues](https://github.com/mixpeek/prebid/issues)
 - **Slack Community**: [Join our Slack](https://mixpeek.com/slack)
 
 ## Next Steps

@@ -21,6 +21,31 @@ The Mixpeek Contextual Adapter enables publishers and SSPs using **Prebid.js** t
 - **Sub-100ms Performance**: Optimized for header bidding speed requirements
 - **Graceful Fallbacks**: Never blocks the auction
 
+### How It Works (Simplified)
+
+```
+USER → WEBSITE → PREBID.JS
+                    │
+                    ├──→ MIXPEEK Connector
+                    │    (Analyze page content)
+                    │    ↓
+                    │    Returns: IAB cats, safety, keywords
+                    │    ↓
+                 (enrich bid request)
+                    │
+                    ├──→ SSP 1 ──→ DSPs ──→ Bid $3.25 ✓ (higher!)
+                    ├──→ SSP 2 ──→ DSPs ──→ Bid $2.90
+                    └──→ SSP 3 ──→ DSPs ──→ Bid $2.75
+                    
+                 (collect bids)
+                    │
+                    ▼
+                AD SERVER (GAM)
+                    │
+                    ▼
+               MORE RELEVANT AD
+```
+
 ## 🚀 Quick Start
 
 ### Installation

@@ -1,3 +1,8 @@
+
+<p align="center">
+  <img src="assets/header.png" alt="Mixpeek Multimodal Contextual Targeting Adapter" />
+</p>
+
 # Mixpeek Contextual Adapter for Prebid.js
 
 [![npm version](https://img.shields.io/npm/v/@mixpeek/prebid.svg)](https://www.npmjs.com/package/@mixpeek/prebid)

@@ -21,14 +21,14 @@ npm install
 # Set your API credentials
 export MIXPEEK_API_KEY="sk_your_api_key_here"
 
-# Use development server (temporary)
-export MIXPEEK_API_ENDPOINT="https://server-xb24.onrender.com"
+# Use production API endpoint
+export MIXPEEK_API_ENDPOINT="https://api.mixpeek.com"
 
 # Optional: Set a collection ID (will create if not set)
 export MIXPEEK_COLLECTION_ID="col_your_collection_id"
 ```
 
-> **Note**: We're currently using the development server at `https://server-xb24.onrender.com`. When ready for production, change to `https://api.mixpeek.com`.
+> **Note**: Use the production API: `https://api.mixpeek.com`.
 
 ## 3. Validate Setup
 
@@ -132,7 +132,7 @@ pbjs.que.push(function() {
         params: {
           apiKey: 'YOUR_API_KEY',
           collectionId: 'YOUR_COLLECTION_ID',
-          endpoint: 'https://server-xb24.onrender.com', // Development server
+          endpoint: 'https://api.mixpeek.com', // Production API
           featureExtractors: ['taxonomy'],
           mode: 'auto',
           timeout: 5000, // Higher timeout for dev server

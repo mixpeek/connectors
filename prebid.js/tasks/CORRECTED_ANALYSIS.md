@@ -6,9 +6,7 @@
 
 ## ⚠️ Previous Misunderstanding
 
-I was incorrectly assuming Mixpeek was missing features when they may already exist. This document provides a corrected analysis based on:
-1. The OpenAPI spec from https://server-xb24.onrender.com/docs/openapi.json
-2. Mixpeek documentation at https://docs.mixpeek.com
+I was incorrectly assuming Mixpeek was missing features when they may already exist. This document provides a corrected analysis based on Mixpeek documentation and live API behavior.
 3. Actual API capabilities
 
 ---
@@ -115,15 +113,15 @@ I was incorrectly assuming Mixpeek was missing features when they may already ex
 
 ```bash
 # 1. List all feature extractors
-curl https://server-xb24.onrender.com/v1/collections/features/extractors \
+curl https://api.mixpeek.com/v1/collections/features/extractors \
   -H "Authorization: Bearer $MIXPEEK_API_KEY"
 
 # 2. Get taxonomy extractor details
-curl https://server-xb24.onrender.com/v1/collections/features/extractors/taxonomy \
+curl https://api.mixpeek.com/v1/collections/features/extractors/taxonomy \
   -H "Authorization: Bearer $MIXPEEK_API_KEY"
 
 # 3. Test document creation with taxonomy
-curl -X POST https://server-xb24.onrender.com/v1/collections/$COLLECTION_ID/documents \
+curl -X POST https://api.mixpeek.com/v1/collections/$COLLECTION_ID/documents \
   -H "Authorization: Bearer $MIXPEEK_API_KEY" \
   -H "Content-Type: application/json" \
   -d '{

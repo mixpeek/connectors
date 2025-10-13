@@ -17,7 +17,7 @@ export const DEFAULT_API_ENDPOINT = typeof process !== 'undefined' && process.en
 // Alternative endpoints
 export const API_ENDPOINTS = {
   PRODUCTION: 'https://api.mixpeek.com',
-  DEVELOPMENT: 'https://server-xb24.onrender.com',
+  DEVELOPMENT: 'https://api.mixpeek.com',
   LOCAL: 'http://localhost:8000'
 }
 

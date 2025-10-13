@@ -83,7 +83,7 @@ global.TEST_CONFIG = {
   apiKey: process.env.MIXPEEK_API_KEY,
   collectionId: process.env.MIXPEEK_COLLECTION_ID,
   namespace: process.env.MIXPEEK_NAMESPACE,
-  endpoint: process.env.MIXPEEK_API_ENDPOINT || 'https://server-xb24.onrender.com',
+  endpoint: process.env.MIXPEEK_API_ENDPOINT || 'https://api.mixpeek.com',
   timeout: 30000 // 30 seconds for live API calls
 }
 

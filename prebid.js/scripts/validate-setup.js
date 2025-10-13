@@ -13,7 +13,7 @@ const config = {
   apiKey: process.env.MIXPEEK_API_KEY,
   collectionId: process.env.MIXPEEK_COLLECTION_ID,
   namespace: process.env.MIXPEEK_NAMESPACE,
-  endpoint: process.env.MIXPEEK_API_ENDPOINT || 'https://server-xb24.onrender.com'
+  endpoint: process.env.MIXPEEK_API_ENDPOINT || 'https://api.mixpeek.com'
 }
 
 console.log('\n🔍 Mixpeek API Setup Validation\n')

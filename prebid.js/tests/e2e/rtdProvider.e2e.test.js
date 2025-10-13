@@ -18,7 +18,7 @@ import adapter from '../../src/modules/mixpeekContextAdapter.js'
 const E2E_CONFIG = {
   apiKey: process.env.MIXPEEK_API_KEY,
   collectionId: process.env.MIXPEEK_COLLECTION_ID,
-  endpoint: process.env.MIXPEEK_ENDPOINT || 'https://server-xb24.onrender.com',
+  endpoint: process.env.MIXPEEK_ENDPOINT || 'https://api.mixpeek.com',
   namespace: process.env.MIXPEEK_NAMESPACE || 'e2e-test',
   timeout: 30000 // 30 seconds for E2E tests
 }

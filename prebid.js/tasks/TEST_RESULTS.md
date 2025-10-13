@@ -6,7 +6,7 @@
 
 ## Test Suite Summary
 
-I've built comprehensive tests that validate the adapter against the real Mixpeek API endpoints from the OpenAPI spec at https://server-xb24.onrender.com/docs/openapi.json.
+I've built comprehensive tests that validate the adapter against the real Mixpeek API endpoints.
 
 ## What's Tested
 

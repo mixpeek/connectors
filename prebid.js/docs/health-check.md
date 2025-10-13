@@ -164,7 +164,7 @@ if (health.status === 'ok') {
 ```javascript
 pbjs.setConfig({
   mixpeek: {
-    endpoint: 'https://server-xb24.onrender.com',
+    endpoint: 'https://api.mixpeek.com',
     healthCheck: 'eager', // Validate immediately
     debug: true,
     timeout: 5000
@@ -177,7 +177,7 @@ pbjs.setConfig({
 ```javascript
 pbjs.setConfig({
   mixpeek: {
-    endpoint: 'https://server-xb24.onrender.com',
+    endpoint: 'https://api.mixpeek.com',
     healthCheck: 'lazy', // Balance validation & performance
     debug: true,
     timeout: 3000
@@ -251,11 +251,11 @@ This ensures **resilient behavior** where API issues never break your ads.
 
 ```bash
 # Test endpoint manually
-curl https://server-xb24.onrender.com/v1/health
+curl https://api.mixpeek.com/v1/health
 
 # With authentication
 curl -H "Authorization: Bearer YOUR_API_KEY" \
-     https://server-xb24.onrender.com/v1/health
+     https://api.mixpeek.com/v1/health
 ```
 
 ### Enable Debug Logging
@@ -272,7 +272,7 @@ pbjs.setConfig({
 Console output:
 ```
 [mixpeek] Performing health check...
-[mixpeek] API Request: GET https://server-xb24.onrender.com/v1/health
+[mixpeek] API Request: GET https://api.mixpeek.com/v1/health
 [mixpeek] API Response: { status: 200, ... }
 [mixpeek] Health check passed: API responding in 234ms
 ```

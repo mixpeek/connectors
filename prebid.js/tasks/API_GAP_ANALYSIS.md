@@ -656,7 +656,7 @@ Returns consistent test data
 - CI/CD integration
 - Demo environments
 
-**Workaround:** Development server (server-xb24.onrender.com).
+**Workaround:** Use production API (api.mixpeek.com).
 
 ---
 

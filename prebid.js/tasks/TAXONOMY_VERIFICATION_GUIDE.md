@@ -80,7 +80,7 @@ export MIXPEEK_API_KEY="your_api_key_here"
 export COLLECTION_ID="your_collection_id"
 
 # Optional: Set custom endpoint
-export MIXPEEK_ENDPOINT="https://server-xb24.onrender.com"
+export MIXPEEK_ENDPOINT="https://api.mixpeek.com"
 ```
 
 ### Step 2: Run the Script
@@ -104,7 +104,7 @@ The script will:
 🔍 MIXPEEK TAXONOMY VERIFICATION
 ================================================================================
 
-Endpoint:      https://server-xb24.onrender.com
+Endpoint:      https://api.mixpeek.com
 Collection ID: col_abc123
 API Key:       sk_1234567...
 

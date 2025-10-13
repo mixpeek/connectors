@@ -12,7 +12,7 @@ const https = require('https')
 const config = {
   apiKey: process.env.MIXPEEK_API_KEY,
   collectionId: process.env.MIXPEEK_COLLECTION_ID,
-  endpoint: process.env.MIXPEEK_API_ENDPOINT || 'https://server-xb24.onrender.com'
+  endpoint: process.env.MIXPEEK_API_ENDPOINT || 'https://api.mixpeek.com'
 }
 
 console.log('\n🔍 Mixpeek Capability Verification\n')

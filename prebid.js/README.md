@@ -70,15 +70,12 @@ pbjs.setConfig({
       params: {
         apiKey: 'YOUR_MIXPEEK_API_KEY',
         collectionId: 'your-collection-id',
-        
-        // Use development server (temporary)
-        endpoint: 'https://server-xb24.onrender.com',
-        // Or production: endpoint: 'https://api.mixpeek.com',
+        endpoint: 'https://api.mixpeek.com',
         
         namespace: 'your-namespace', // optional
         featureExtractors: ['taxonomy', 'brand-safety'],
         mode: 'page', // 'page', 'video', or 'auto'
-        timeout: 5000, // ms - higher for dev server
+        timeout: 250,
         cacheTTL: 300 // seconds
       }
     }]
@@ -117,7 +114,7 @@ pbjs.requestBids({
 |--------|------|----------|---------|-------------|
 | `params.apiKey` | string | ✅ | - | Your Mixpeek API key |
 | `params.collectionId` | string | ✅ | - | Mixpeek collection ID for document processing |
-| `params.endpoint` | string | ❌ | `https://server-xb24.onrender.com` | Mixpeek API endpoint (dev server default) |
+| `params.endpoint` | string | ❌ | `https://api.mixpeek.com` | Mixpeek API endpoint (production) |
 | `params.namespace` | string | ❌ | - | Optional namespace for data isolation |
 | `params.featureExtractors` | array | ❌ | `['taxonomy']` | Feature extractors to use (taxonomy, brand-safety, etc.) |
 | `params.mode` | string | ❌ | `auto` | Content mode: `page`, `video`, `image`, or `auto` |

@@ -147,7 +147,7 @@ export MIXPEEK_API_KEY="sk_your_api_key"
 export MIXPEEK_COLLECTION_ID="col_your_collection"
 
 # Optional
-export MIXPEEK_ENDPOINT="https://server-xb24.onrender.com"  # Default
+export MIXPEEK_ENDPOINT="https://api.mixpeek.com"  # Default
 export MIXPEEK_NAMESPACE="test"  # Optional namespace
 ```
 
@@ -156,7 +156,7 @@ export MIXPEEK_NAMESPACE="test"  # Optional namespace
 Create a collection with taxonomy feature extractor:
 
 ```bash
-curl -X POST https://server-xb24.onrender.com/v1/collections \
+curl -X POST https://api.mixpeek.com/v1/collections \
   -H "Authorization: Bearer $MIXPEEK_API_KEY" \
   -H "Content-Type: application/json" \
   -d '{

@@ -40,7 +40,7 @@ pbjs.setConfig({
   mixpeek: {
     apiKey: 'sk_your_api_key',
     collectionId: 'col_your_collection',
-    endpoint: 'https://server-xb24.onrender.com',
+    endpoint: 'https://api.mixpeek.com',
     namespace: 'production',
     featureExtractors: ['taxonomy', 'brand-safety'],
     mode: 'auto',
@@ -63,7 +63,7 @@ pbjs.setConfig({
       params: {         // NEW: Wrap all config in params
         apiKey: 'sk_your_api_key',
         collectionId: 'col_your_collection',
-        endpoint: 'https://server-xb24.onrender.com',
+        endpoint: 'https://api.mixpeek.com',
         namespace: 'production',
         featureExtractors: ['taxonomy', 'brand-safety'],
         mode: 'auto',

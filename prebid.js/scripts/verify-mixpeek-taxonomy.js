@@ -16,7 +16,7 @@ const http = require('http')
 // Configuration
 const API_KEY = process.env.MIXPEEK_API_KEY
 const COLLECTION_ID = process.env.COLLECTION_ID
-const ENDPOINT = process.env.MIXPEEK_ENDPOINT || 'https://server-xb24.onrender.com'
+const ENDPOINT = process.env.MIXPEEK_ENDPOINT || 'https://api.mixpeek.com'
 
 // Test content samples
 const TEST_SAMPLES = [

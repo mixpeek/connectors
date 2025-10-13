@@ -6,7 +6,7 @@ The Mixpeek adapter can work with different API endpoints. This is useful for de
 
 | Environment | URL | Use Case |
 |-------------|-----|----------|
-| **Development** | `https://server-xb24.onrender.com` | Testing and development (default) |
+| **Development** | `https://api.mixpeek.com` | Testing and development |
 | **Production** | `https://api.mixpeek.com` | Production deployment |
 | **Local** | `http://localhost:8000` | Local development |
 
@@ -17,8 +17,8 @@ The Mixpeek adapter can work with different API endpoints. This is useful for de
 Set the endpoint before running tests or building:
 
 ```bash
-# Use development server (default)
-export MIXPEEK_API_ENDPOINT=https://server-xb24.onrender.com
+# Use production API endpoint (recommended)
+export MIXPEEK_API_ENDPOINT=https://api.mixpeek.com
 
 # Or use production
 export MIXPEEK_API_ENDPOINT=https://api.mixpeek.com
@@ -34,10 +34,10 @@ Edit `.mixpeek.config.js`:
 ```javascript
 module.exports = {
   // Option 1: Direct URL
-  endpoint: 'https://server-xb24.onrender.com',
+  endpoint: 'https://api.mixpeek.com',
   
   // Option 2: Use predefined names
-  endpoint: 'development', // or 'production', 'local'
+  endpoint: 'production', // or 'local'
   
   // Your credentials
   apiKey: process.env.MIXPEEK_API_KEY,
@@ -58,8 +58,7 @@ pbjs.setConfig({
   mixpeek: {
     apiKey: 'YOUR_API_KEY',
     collectionId: 'YOUR_COLLECTION_ID',
-    endpoint: 'https://server-xb24.onrender.com', // Development server
-    // endpoint: 'https://api.mixpeek.com', // Production server
+    endpoint: 'https://api.mixpeek.com', // Production API
     timeout: 5000,
     featureExtractors: ['taxonomy']
   }
@@ -73,7 +72,7 @@ For browser-based configuration:
 ```html
 <script>
   // Set before loading the adapter
-  window.MIXPEEK_API_ENDPOINT = 'https://server-xb24.onrender.com';
+  window.MIXPEEK_API_ENDPOINT = 'https://api.mixpeek.com';
 </script>
 <script src="mixpeekContextAdapter.js"></script>
 ```
@@ -83,8 +82,8 @@ For browser-based configuration:
 ### For Development & Testing
 
 ```bash
-# Set development endpoint
-export MIXPEEK_API_ENDPOINT=https://server-xb24.onrender.com
+# Set production endpoint
+export MIXPEEK_API_ENDPOINT=https://api.mixpeek.com
 export MIXPEEK_API_KEY=your_dev_key
 
 # Validate setup
@@ -117,10 +116,6 @@ Create a shell script for easy switching:
 # switch-endpoint.sh
 
 case "$1" in
-  dev|development)
-    export MIXPEEK_API_ENDPOINT=https://server-xb24.onrender.com
-    echo "✅ Switched to development: https://server-xb24.onrender.com"
-    ;;
   prod|production)
     export MIXPEEK_API_ENDPOINT=https://api.mixpeek.com
     echo "✅ Switched to production: https://api.mixpeek.com"
@@ -145,7 +140,7 @@ esac
 ### Development (.env.development)
 
 ```bash
-MIXPEEK_API_ENDPOINT=https://server-xb24.onrender.com
+MIXPEEK_API_ENDPOINT=https://api.mixpeek.com
 MIXPEEK_API_KEY=sk_dev_key
 MIXPEEK_COLLECTION_ID=col_dev_collection
 MIXPEEK_NAMESPACE=development
@@ -187,7 +182,7 @@ Output will show:
    API Key: ✅ Set
    Collection ID: ✅ Set
    Namespace: ⚠️  Not set (using default)
-   Endpoint: https://server-xb24.onrender.com  👈 Current endpoint
+   Endpoint: https://api.mixpeek.com  👈 Current endpoint
 ```
 
 ## CI/CD Configuration
@@ -204,10 +199,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      - name: Test against dev server
+      - name: Test against production API
         env:
-          MIXPEEK_API_ENDPOINT: https://server-xb24.onrender.com
-          MIXPEEK_API_KEY: ${{ secrets.MIXPEEK_DEV_API_KEY }}
+          MIXPEEK_API_ENDPOINT: https://api.mixpeek.com
+          MIXPEEK_API_KEY: ${{ secrets.MIXPEEK_PROD_API_KEY }}
         run: npm run test:live
 
   test-prod:
@@ -237,8 +232,8 @@ Adjust timeout accordingly:
 ```javascript
 pbjs.setConfig({
   mixpeek: {
-    endpoint: 'https://server-xb24.onrender.com',
-    timeout: 5000 // Higher timeout for dev server
+    endpoint: 'https://api.mixpeek.com',
+    timeout: 250
   }
 });
 ```
@@ -247,10 +242,10 @@ pbjs.setConfig({
 
 ### "Cannot connect to endpoint"
 
-Check if the server is running:
+Check if the API is reachable:
 
 ```bash
-curl https://server-xb24.onrender.com/v1/health
+curl https://api.mixpeek.com/v1/health
 ```
 
 Expected response:
@@ -273,7 +268,7 @@ Clear and reset if needed:
 
 ```bash
 unset MIXPEEK_API_ENDPOINT
-export MIXPEEK_API_ENDPOINT=https://server-xb24.onrender.com
+export MIXPEEK_API_ENDPOINT=https://api.mixpeek.com
 ```
 
 ### "Different results between endpoints"
@@ -287,10 +282,10 @@ Use the same collection ID across environments when possible.
 
 ## Current Default
 
-The adapter currently defaults to the **development server** for testing:
+The adapter defaults to the **production API**:
 
 ```
-https://server-xb24.onrender.com
+https://api.mixpeek.com
 ```
 
 This can be changed in:
@@ -302,7 +297,6 @@ This can be changed in:
 ## Support
 
 For endpoint-specific issues:
-- **Development server**: Check [https://server-xb24.onrender.com/](https://server-xb24.onrender.com/) status
 - **Production API**: Check [https://status.mixpeek.com](https://status.mixpeek.com)
 - **General help**: support@mixpeek.com
 

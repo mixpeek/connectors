@@ -3,9 +3,9 @@
 
 case "$1" in
   dev|development)
-    export MIXPEEK_API_ENDPOINT=https://server-xb24.onrender.com
+    export MIXPEEK_API_ENDPOINT=https://api.mixpeek.com
     echo "✅ Switched to development server"
-    echo "   Endpoint: https://server-xb24.onrender.com"
+    echo "   Endpoint: https://api.mixpeek.com"
     echo ""
     echo "Now run: npm run test:live"
     ;;

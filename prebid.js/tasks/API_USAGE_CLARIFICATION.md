@@ -22,7 +22,7 @@
 ```javascript
 // v2.0 makes REAL fetch() calls to Mixpeek API
 async _request(path, options = {}) {
-  const url = `${this.endpoint}${path}`  // e.g., https://server-xb24.onrender.com
+  const url = `${this.endpoint}${path}`  // e.g., https://api.mixpeek.com
   const response = await fetch(url, fetchOptions)
   // ...
 }
@@ -169,7 +169,7 @@ mixpeekRtdProvider.init() called
 
 **Request:**
 ```http
-POST https://server-xb24.onrender.com/v1/collections/col_abc123/documents
+POST https://api.mixpeek.com/v1/collections/col_abc123/documents
 Authorization: Bearer sk_your_api_key
 Content-Type: application/json
 
@@ -209,7 +209,7 @@ Content-Type: application/json
 
 **Request:**
 ```http
-GET https://server-xb24.onrender.com/v1/collections/col_abc123/documents/doc_xyz789
+GET https://api.mixpeek.com/v1/collections/col_abc123/documents/doc_xyz789
 Authorization: Bearer sk_your_api_key
 ```
 
@@ -419,7 +419,7 @@ async insertDocument(collectionId, payload) {
 
 async _request(path, options = {}) {
   const url = `${this.endpoint}${path}`
-  // e.g., https://server-xb24.onrender.com/v1/collections/col_abc/documents
+  // e.g., https://api.mixpeek.com/v1/collections/col_abc/documents
   
   const response = await fetch(url, fetchOptions)  // ← Real fetch!
   

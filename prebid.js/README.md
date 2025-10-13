@@ -224,26 +224,69 @@ pbjs.setConfig({
 
 ```mermaid
 sequenceDiagram
-    participant Publisher
-    participant Prebid
-    participant MixpeekAdapter
-    participant MixpeekAPI
-    participant SSP
+    actor User
+    participant Website
+    participant PrebidJS as Prebid.js
+    participant Mixpeek as Mixpeek (Data)
+    participant SSP1 as SSP 1
+    participant SSP2 as SSP 2
+    participant SSP3 as SSP N
+    participant DSP as DSPs
+    participant AdServer as Ad Server (GAM)
+    participant AdSlot as Ad Slot
 
-    Publisher->>Prebid: Request Bids
-    Prebid->>MixpeekAdapter: beforeRequestBids event
-    MixpeekAdapter->>MixpeekAdapter: Extract page/video content
-    MixpeekAdapter->>MixpeekAdapter: Check cache
+    User->>Website: Visits page
+    Website->>PrebidJS: Initialize
+    
+    Note over PrebidJS,Mixpeek: Data Collection Phase
+    PrebidJS->>Mixpeek: Request contextual data
+    Mixpeek->>Mixpeek: Extract & analyze content
+    Mixpeek->>Mixpeek: Check cache
     alt Cache Miss
-        MixpeekAdapter->>MixpeekAPI: POST /collections/{id}/documents
-        MixpeekAPI->>MixpeekAPI: Process with feature extractors
-        MixpeekAPI-->>MixpeekAdapter: Return enrichments
-        MixpeekAdapter->>MixpeekAdapter: Cache result
+        Mixpeek->>Mixpeek: Process with AI (taxonomy, brand-safety)
     end
-    MixpeekAdapter->>Prebid: Inject contextual key-values
-    Prebid->>SSP: Send enriched bid request
-    SSP-->>Prebid: Return bids
-    Prebid-->>Publisher: Render ad
+    Mixpeek-->>PrebidJS: Return (context, categories, keywords)
+    
+    Note over PrebidJS,SSP3: Parallel Bid Request Phase (Header Bidding)
+    par Parallel requests to all SSPs
+        PrebidJS->>SSP1: Bid request + Mixpeek data
+        PrebidJS->>SSP2: Bid request + Mixpeek data
+        PrebidJS->>SSP3: Bid request + Mixpeek data
+    end
+    
+    Note over SSP1,DSP: SSPs forward to DSPs
+    par SSPs contact DSPs
+        SSP1->>DSP: Forward bid request
+        SSP2->>DSP: Forward bid request
+        SSP3->>DSP: Forward bid request
+    end
+    
+    Note over DSP: DSPs evaluate & bid
+    par DSPs respond with bids
+        DSP-->>SSP1: Bid response ($2.50)
+        DSP-->>SSP2: Bid response ($2.75)
+        DSP-->>SSP3: Bid response ($2.30)
+    end
+    
+    Note over SSP1,PrebidJS: Return bids (within timeout ~1-2s)
+    par SSPs return to Prebid
+        SSP1-->>PrebidJS: Bid: $2.50
+        SSP2-->>PrebidJS: Bid: $2.75
+        SSP3-->>PrebidJS: Bid: $2.30
+    end
+    
+    Note over PrebidJS: Collect & rank all bids
+    PrebidJS->>PrebidJS: Determine winners
+    
+    Note over PrebidJS,AdServer: Send to Ad Server
+    PrebidJS->>AdServer: Pass bid data (key-values)
+    Website->>AdServer: Request ad
+    
+    Note over AdServer: Compare Prebid bids vs direct deals
+    AdServer->>AdServer: Run auction (Prebid vs direct)
+    
+    AdServer-->>AdSlot: Return winning creative
+    AdSlot->>User: Display ad
 ```
 
 ## 🧪 Testing

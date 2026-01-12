@@ -1,16 +1,31 @@
 
 <p align="center">
-  <img src="assets/header.png" alt="Mixpeek Multimodal Contextual Targeting - Prebid Server" />
+  <img src="assets/header.png" alt="Mixpeek Server-Side RTD Reference Implementation" />
 </p>
 
-# Mixpeek RTD (Real-Time Data) Module for Prebid Server
+# Mixpeek Server-Side RTD Reference for Prebid Server
 
-**Server-side contextual enrichment with sub-100ms performance for OpenRTB bid requests.**
+**Reference implementation and test harness for server-side OpenRTB bid request enrichment.**
 
 [![npm version](https://img.shields.io/npm/v/@mixpeek/prebid-server.svg)](https://www.npmjs.com/package/@mixpeek/prebid-server)
 [![npm downloads](https://img.shields.io/npm/dm/@mixpeek/prebid-server.svg)](https://www.npmjs.com/package/@mixpeek/prebid-server)
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
-[![Status](https://img.shields.io/badge/Status-Production--Ready-brightgreen.svg)](https://www.npmjs.com/package/@mixpeek/prebid-server)
+[![Status](https://img.shields.io/badge/Status-Reference-blue.svg)](https://www.npmjs.com/package/@mixpeek/prebid-server)
+
+---
+
+## How This Relates to Prebid Server
+
+Prebid Server is implemented in **Go** and does not directly consume npm packages at runtime.
+
+This package provides:
+
+- **Reference implementation** of Mixpeek's server-side RTD logic
+- **OpenRTB field mappings** identical to the Prebid Server data provider
+- **Local test harness** for validating bid request enrichment
+- **Utilities** for teams running Prebid Server behind Node-based gateways or proxies
+
+The canonical Prebid Server integration is implemented as a Go data provider and documented separately.
 
 ---
 
@@ -18,39 +33,39 @@
 
 | Type | Status |
 |------|--------|
-| **RTD Module** (server-side bid enrichment) | Supported |
-| Bidder Adapter | Not a bidder |
-| Analytics Adapter | Not analytics |
-| Identity Module | Not identity |
+| **Reference Implementation** | OpenRTB enrichment logic |
+| **Test Harness** | Validate bid request enrichment |
+| **Node Gateway Utility** | For PBS proxy/gateway layers |
+| Prebid Server Runtime | Not a Go module |
 
-**SSPs and DSPs can immediately consume these signals via `ortb2.site.content` and `ortb2Imp.ext.data` without custom integration.**
+**SSPs and DSPs can use these field mappings via `ortb2.site.content` and `ortb2Imp.ext.data`.**
 
 ---
 
 ## Who This Is For
 
-- **SSPs** running Prebid Server who need contextual signals
-- **Publishers** with server-side header bidding setups
-- **Ad Tech Platforms** looking for cookie-free targeting
+- **Engineers** building or validating Prebid Server data providers
+- **Teams** running Node-based gateways in front of Prebid Server
+- **Developers** testing OpenRTB enrichment logic locally
+- **Ad Tech Platforms** evaluating Mixpeek contextual signals
 
-Used in Mixpeek production demos and SSP pilots.
+Used in Mixpeek production demos and SSP integration testing.
 
 ---
 
 ## Why Use This
 
-1. **Server-Side Performance** - No client-side latency impact
-2. **Privacy-First Contextual Targeting** - No cookies, no user tracking
-3. **IAB Taxonomy Classification** - Content categorization (v3.0)
-4. **Brand Safety Scoring** - Real-time sentiment analysis
-5. **Built-in Caching** - High-performance in-memory cache
-6. **Graceful Degradation** - Never blocks bid requests on API failures
+1. **Spec-Aligned** - Identical field mappings to the Go data provider
+2. **Local Testing** - Validate enrichment without deploying to PBS
+3. **Privacy-First** - No cookies, no user tracking
+4. **IAB Taxonomy v3.0** - Standard content categorization
+5. **Graceful Degradation** - Never blocks bid requests on API failures
 
-**Graceful Failure:** If Mixpeek is unavailable or times out, bid requests proceed with fallback enrichment. The module never blocks auctions.
+**Graceful Failure:** If Mixpeek is unavailable or times out, bid requests proceed with fallback enrichment.
 
 ---
 
-## Minimal Setup (Copy-Paste Ready)
+## Quick Start
 
 ```javascript
 import { createEnricher } from '@mixpeek/prebid-server'
@@ -61,15 +76,13 @@ const enricher = createEnricher({
   namespace: 'YOUR_NAMESPACE'
 })
 
-// Enrich bid request
+// Enrich a bid request
 const enrichedBidRequest = await enricher.enrichBidRequest(bidRequest, {
   url: pageUrl,
   title: pageTitle,
   text: pageContent
 })
 ```
-
-That's it. The enricher automatically adds contextual data to your bid requests.
 
 ---
 
@@ -174,10 +187,6 @@ const enriched = await enricher.enrichBidRequest(bidRequest, {
 
 Check API connectivity.
 
-```javascript
-const health = await enricher.healthCheck()
-```
-
 ### enricher.clearCache()
 
 Clear the in-memory cache.
@@ -193,7 +202,9 @@ const stats = enricher.getCacheStats()
 
 ---
 
-## OpenRTB 2.6 Output
+## OpenRTB 2.6 Field Mappings
+
+These mappings are **identical** to the Prebid Server Go data provider.
 
 ### Site-Level Data (`ortb2.site.content`)
 
@@ -236,7 +247,9 @@ const stats = enricher.getCacheStats()
 
 ---
 
-## Integration Example (Express.js)
+## Use Case: Node Gateway in Front of PBS
+
+If you run a Node-based gateway or proxy in front of Prebid Server, you can use this package to enrich requests before forwarding:
 
 ```javascript
 import express from 'express'
@@ -251,22 +264,26 @@ const enricher = createEnricher({
   namespace: process.env.MIXPEEK_NAMESPACE
 })
 
+// Gateway endpoint - enriches then forwards to PBS
 app.post('/openrtb/auction', async (req, res) => {
   const bidRequest = req.body
 
-  // Extract content from request or fetch from page
+  // Enrich with contextual data
   const content = {
     url: bidRequest.site?.page,
     title: bidRequest.site?.content?.title,
-    text: req.body.pageContent // Or fetch separately
+    text: req.body.pageContent
   }
-
-  // Enrich bid request
   const enrichedRequest = await enricher.enrichBidRequest(bidRequest, content)
 
-  // Forward to your auction logic
-  const auctionResult = await runAuction(enrichedRequest)
-  res.json(auctionResult)
+  // Forward to Prebid Server
+  const pbsResponse = await fetch('http://prebid-server:8000/openrtb2/auction', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(enrichedRequest)
+  })
+
+  res.json(await pbsResponse.json())
 })
 
 app.listen(3000)
@@ -301,4 +318,4 @@ npm run test:live
 
 Apache 2.0 - see [LICENSE](LICENSE)
 
-Built by [Mixpeek](https://mixpeek.com) | For [Prebid Server](https://prebid.org)
+Built by [Mixpeek](https://mixpeek.com) | Reference for [Prebid Server](https://prebid.org)

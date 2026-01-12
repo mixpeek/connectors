@@ -1,8 +1,8 @@
 {
   "name": "@mixpeek/prebid-server",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "type": "module",
-  "description": "Mixpeek RTD (Real-Time Data) Module for Prebid Server - Server-side contextual enrichment with sub-100ms performance, ad adjacency awareness, and cookie-free bid enrichment",
+  "description": "Mixpeek Server-Side RTD Reference for Prebid Server - Reference implementation and test harness for OpenRTB bid request enrichment with identical field mappings to the Go data provider",
   "main": "dist/index.js",
   "module": "src/index.js",
   "types": "dist/index.d.ts",

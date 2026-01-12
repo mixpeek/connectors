@@ -1,11 +1,21 @@
 # Changelog
 
-All notable changes to the Mixpeek OpenRTB Connector will be documented in this file.
+All notable changes to @mixpeek/openrtb will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [1.0.0] - 2024-01-11
+## [1.0.1] - 2025-01-12
+
+### Changed
+
+- Reframed as non-normative OpenRTB reference implementation
+- Added "Scope & Intent" section clarifying spec alignment
+- Updated "Who This Is For" to focus on implementers and reviewers
+- Moved bid-modifier examples to appendix (non-spec)
+- Spec-focused keywords and package description
+
+## [1.0.0] - 2025-01-11
 
 ### Added
 

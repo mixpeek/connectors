@@ -1,29 +1,39 @@
-# Mixpeek OpenRTB Connector
+# @mixpeek/openrtb
 
-Privacy-first contextual enrichment for OpenRTB bid requests using multimodal AI.
+OpenRTB 2.5/2.6/3.0 reference implementation for contextual content enrichment.
 
 [![npm version](https://badge.fury.io/js/%40mixpeek%2Fopenrtb.svg)](https://www.npmjs.com/package/@mixpeek/openrtb)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
+## Scope & Intent
+
+This package is a **non-normative reference implementation** intended to:
+
+- Demonstrate valid OpenRTB 2.5/2.6/3.0 enrichment patterns
+- Provide executable examples of `site.content` and `imp.ext.data` usage
+- Validate field mappings against the OpenRTB specification
+- Show compliant IAB Content Taxonomy 3.0 category assignment
+
+It is **not** a required runtime dependency for OpenRTB implementations. Production systems may implement equivalent logic in any language.
+
 ## Overview
 
-The Mixpeek OpenRTB Connector enriches bid requests with contextual AI signals, enabling better targeting without user tracking. It extracts content from OpenRTB bid requests, processes it through Mixpeek's multimodal AI, and returns standardized enrichments in OpenRTB 2.5/2.6/3.0 format.
+This reference implementation extracts content from OpenRTB bid requests, processes it through Mixpeek's content analysis API, and returns enrichments formatted as spec-compliant OpenRTB fields. All output conforms to OpenRTB 2.5/2.6/3.0 field definitions.
 
-### Core Value Proposition
+### Key Characteristics
 
-- **Privacy-First**: No user tracking or PII - pure contextual signals
-- **Real-Time**: Sub-200ms processing for RTB latency requirements
-- **Standards-Based**: OpenRTB 2.5/2.6/3.0 compliant output
-- **Multimodal AI**: Text, image, and video content understanding
-- **IAB Taxonomy**: Automatic IAB Content Taxonomy 3.0 categorization
-- **Brand Safety**: Built-in sentiment analysis and safety scoring
+- **Spec-Compliant Output**: All enrichments map to standard OpenRTB fields
+- **RTB-Safe Latency**: Sub-200ms processing, never blocks bid flow
+- **IAB Taxonomy 3.0**: Category assignments use `cattax: 7` per spec
+- **Graceful Degradation**: Fallback enrichments on API failure
+- **Privacy-First**: No user tracking or PII—pure contextual signals
 
 ## Who This Is For
 
-- **SSPs/Exchanges**: Enrich bid requests before sending to DSPs
-- **DSPs**: Pre-process bid requests for better targeting decisions
-- **Publishers**: Server-side enrichment for improved inventory value
-- **Ad Tech Platforms**: Add contextual signals to your RTB pipeline
+- **Engineers** implementing or validating OpenRTB pipelines
+- **SSP/DSP platform teams** testing contextual enrichment patterns
+- **Standards reviewers** evaluating non-normative examples
+- **Ad tech teams** building spec-compliant RTB infrastructure
 
 ## Installation
 
@@ -378,7 +388,7 @@ npm run test:coverage
 
 ## Examples
 
-### SSP Integration
+### Basic Enrichment
 
 ```javascript
 import { createEnricher } from '@mixpeek/openrtb';
@@ -387,47 +397,27 @@ const enricher = createEnricher({
   apiKey: process.env.MIXPEEK_API_KEY,
   collectionId: process.env.MIXPEEK_COLLECTION_ID,
   namespace: process.env.MIXPEEK_NAMESPACE,
-  timeout: 150 // Strict timeout for SSP latency requirements
+  timeout: 150 // RTB-safe timeout
 });
 
 async function processBidRequest(bidRequest) {
-  // Enrich before sending to DSPs
+  // Enrich and return spec-compliant output
   const enrichedRequest = await enricher.enrichBidRequest(bidRequest);
-
-  // Send to DSPs
-  const responses = await sendToDSPs(enrichedRequest);
-
-  return responses;
+  return enrichedRequest;
 }
 ```
 
-### DSP Integration
+### Validating Output Fields
 
 ```javascript
-import { createEnricher } from '@mixpeek/openrtb';
+const result = await enricher.enrich(bidRequest);
 
-const enricher = createEnricher({
-  apiKey: process.env.MIXPEEK_API_KEY,
-  collectionId: process.env.MIXPEEK_COLLECTION_ID,
-  namespace: process.env.MIXPEEK_NAMESPACE
-});
+// Verify IAB Taxonomy 3.0 compliance
+console.log(result.ortb2.site.content.cattax); // 7 (IAB Tech Lab Content Taxonomy 3.0)
+console.log(result.ortb2.site.content.cat);    // ['IAB19', 'IAB19-18']
 
-async function evaluateBidRequest(bidRequest) {
-  const result = await enricher.enrich(bidRequest);
-
-  // Use enrichments for bid decision
-  if (result.enrichments.brandSafety.level === 'high_risk') {
-    return null; // Don't bid on risky content
-  }
-
-  // Adjust bid based on context
-  let bidModifier = 1.0;
-  if (result.enrichments.categories.category === 'IAB19') {
-    bidModifier = 1.2; // 20% boost for tech content
-  }
-
-  return calculateBid(bidRequest, bidModifier);
-}
+// Check standard field mappings
+console.log(result.ortb2.site.content.keywords); // 'technology,software,ai'
 ```
 
 ## Changelog
@@ -446,6 +436,47 @@ async function evaluateBidRequest(bidRequest) {
 ## License
 
 MIT License - see [LICENSE](LICENSE) for details.
+
+---
+
+## Appendix: Example Downstream Usage (Non-spec)
+
+The following examples show how enriched data might be consumed by downstream systems. These patterns are **not part of the OpenRTB specification** and are provided for illustration only.
+
+### SSP: Enriching Before Auction
+
+```javascript
+async function processBidRequest(bidRequest) {
+  const enrichedRequest = await enricher.enrichBidRequest(bidRequest);
+
+  // Send enriched request to DSPs
+  const responses = await sendToDSPs(enrichedRequest);
+  return responses;
+}
+```
+
+### DSP: Using Enrichments for Bid Decisions
+
+```javascript
+async function evaluateBidRequest(bidRequest) {
+  const result = await enricher.enrich(bidRequest);
+
+  // Brand safety check
+  if (result.enrichments.brandSafety.level === 'high_risk') {
+    return null; // Don't bid
+  }
+
+  // Context-based bid adjustment
+  let bidModifier = 1.0;
+  if (result.enrichments.categories.category === 'IAB19') {
+    bidModifier = 1.2; // Tech content premium
+  }
+
+  return calculateBid(bidRequest, bidModifier);
+}
+```
+
+---
 
 ## Support
 

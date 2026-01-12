@@ -90,6 +90,38 @@ npm install @mixpeek/prebid
 
 ---
 
+## Shadow Mode (Risk-Free Testing)
+
+Deploy in observation mode first — zero auction impact:
+
+```javascript
+pbjs.setConfig({
+  realTimeData: {
+    auctionDelay: 0,        // Don't delay auctions
+    dataProviders: [{
+      name: 'mixpeek',
+      waitForIt: false,     // Don't wait for Mixpeek
+      params: {
+        apiKey: 'YOUR_API_KEY',
+        collectionId: 'YOUR_COLLECTION_ID',
+        namespace: 'YOUR_NAMESPACE',
+        debug: true         // See what signals would be added
+      }
+    }]
+  }
+})
+```
+
+Shadow mode lets you:
+- Verify signals are being generated correctly
+- Monitor latency in your environment
+- Confirm no auction disruption
+- Review ortb2 output before enabling
+
+When ready, switch to production mode by setting `waitForIt: true` and `auctionDelay: 250`.
+
+---
+
 ## Full Configuration
 
 ```javascript

@@ -1,6 +1,6 @@
 {
   "name": "@mixpeek/prebid",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "Mixpeek RTD (Real-Time Data) Adapter for Prebid.js - Privacy-first contextual targeting with sub-100ms performance, ad adjacency awareness, and cookie-free bid enrichment",
   "main": "dist/mixpeekContextAdapter.js",
   "module": "src/modules/mixpeekContextAdapter.js",

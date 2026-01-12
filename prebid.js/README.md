@@ -24,6 +24,18 @@
 | Analytics Adapter | Not analytics |
 | Identity Module | Not identity |
 
+**SSPs and DSPs can immediately consume these signals via `ortb2.site.content` and `ortb2Imp.ext.data` without custom integration.**
+
+---
+
+## Who This Is For
+
+- **Publishers** migrating off cookie-based targeting
+- **SSPs** looking for contextual + adjacency signals
+- **DSPs** pricing inventory using OpenRTB 2.6 context
+
+Used in Mixpeek production demos and SSP pilots.
+
 ---
 
 ## Why Use This
@@ -34,6 +46,8 @@
 4. **Brand Safety Scoring** - Real-time sentiment analysis
 5. **Multimodal Analysis** - Text, image, video content understanding
 6. **Sub-100ms RTD Performance** - Optimized for header bidding latency
+
+**Graceful Failure:** If Mixpeek is unavailable or times out, auctions proceed normally. The module never blocks bid requests.
 
 ---
 

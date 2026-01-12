@@ -153,18 +153,37 @@ export function createEnricher(config) {
         // Build GAM targeting keys
         const targeting = buildTargetingKeys(result)
         const pmpTargeting = buildPMPTargeting(result)
-        const yieldConditions = buildYieldConditions(result)
-        const gptCode = generateGPTCode(result)
+        const inventoryClassification = buildYieldConditions(result)
 
         const enrichment = {
           targeting,
           pmpTargeting,
           context: result,
-          yield: yieldConditions,
-          gptCode,
+          inventory: {
+            isPremium: inventoryClassification.isPremium,
+            isBrandSafe: inventoryClassification.isBrandSafe,
+            qualityMultiplier: inventoryClassification.suggestedFloorMultiplier
+          },
+          // Legacy alias for backward compatibility
+          yield: inventoryClassification,
           latencyMs: Date.now() - startTime,
           cached: false,
-          shadowMode
+          shadowMode,
+          /**
+           * Apply targeting keys to GPT (CSP-safe, no eval)
+           * @param {Object} googletag - Google Publisher Tag object
+           */
+          applyToGPT(googletag) {
+            if (!googletag || !googletag.cmd) {
+              console.warn('googletag not available')
+              return
+            }
+            googletag.cmd.push(() => {
+              Object.entries(targeting).forEach(([key, value]) => {
+                googletag.pubads().setTargeting(key, value)
+              })
+            })
+          }
         }
 
         // Cache result
@@ -301,12 +320,34 @@ function buildFallbackEnrichment(content) {
     taxonomy: { label: category, score: 0.5 }
   }
 
+  const targeting = buildTargetingKeys(result)
+  const inventoryClassification = buildYieldConditions(result)
+
   return {
-    targeting: buildTargetingKeys(result),
+    targeting,
     pmpTargeting: buildPMPTargeting(result),
     context: result,
-    yield: buildYieldConditions(result),
-    gptCode: generateGPTCode(result)
+    inventory: {
+      isPremium: inventoryClassification.isPremium,
+      isBrandSafe: inventoryClassification.isBrandSafe,
+      qualityMultiplier: inventoryClassification.suggestedFloorMultiplier
+    },
+    // Legacy alias for backward compatibility
+    yield: inventoryClassification,
+    /**
+     * Apply targeting keys to GPT (CSP-safe, no eval)
+     */
+    applyToGPT(googletag) {
+      if (!googletag || !googletag.cmd) {
+        console.warn('googletag not available')
+        return
+      }
+      googletag.cmd.push(() => {
+        Object.entries(targeting).forEach(([key, value]) => {
+          googletag.pubads().setTargeting(key, value)
+        })
+      })
+    }
   }
 }
 

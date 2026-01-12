@@ -155,7 +155,7 @@ describe('Enricher.enrich', () => {
     expect(result2.latencyMs).toBeLessThan(result1.latencyMs || 100)
   })
 
-  test('should generate GPT code snippet', async () => {
+  test('should provide applyToGPT method', async () => {
     const content = {
       url: 'https://example.com/tech',
       title: 'Tech Article',
@@ -164,10 +164,14 @@ describe('Enricher.enrich', () => {
 
     const result = await enricher.enrich(content)
 
-    expect(result.gptCode).toBeDefined()
-    expect(result.gptCode).toContain('googletag.cmd.push')
-    expect(result.gptCode).toContain('setTargeting')
-    expect(result.gptCode).toContain('mixpeek_')
+    expect(result.applyToGPT).toBeDefined()
+    expect(typeof result.applyToGPT).toBe('function')
+
+    // Should have inventory classification
+    expect(result.inventory).toBeDefined()
+    expect(result.inventory.isPremium).toBeDefined()
+    expect(result.inventory.isBrandSafe).toBeDefined()
+    expect(result.inventory.qualityMultiplier).toBeDefined()
   })
 
   test('should include yield recommendations', async () => {

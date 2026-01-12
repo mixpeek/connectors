@@ -41,16 +41,19 @@ describe('E2E: GAM Integration Workflow', () => {
       // Verify structure
       expect(result).toHaveProperty('targeting')
       expect(result).toHaveProperty('context')
-      expect(result).toHaveProperty('yield')
-      expect(result).toHaveProperty('gptCode')
+      expect(result).toHaveProperty('inventory')
+      expect(result).toHaveProperty('applyToGPT')
       expect(result).toHaveProperty('latencyMs')
 
       // Verify targeting keys exist
       expect(result.targeting[TARGETING_KEYS.CATEGORY]).toBeDefined()
 
-      // Verify GPT code is valid JavaScript structure
-      expect(result.gptCode).toMatch(/googletag\.cmd\.push\(function\(\)/)
-      expect(result.gptCode).toMatch(/setTargeting\(/)
+      // Verify applyToGPT is a function (CSP-safe, no eval)
+      expect(typeof result.applyToGPT).toBe('function')
+
+      // Verify inventory classification
+      expect(result.inventory.isPremium).toBeDefined()
+      expect(result.inventory.isBrandSafe).toBeDefined()
     })
   })
 
@@ -270,11 +273,11 @@ describe('E2E: GAM Integration Workflow', () => {
       const slot2 = await enricher.getSlotTargeting(pageContent, 'div-gpt-ad-mid')
       expect(slot2.targeting[TARGETING_KEYS.ADJACENCY_SCORE]).toBeDefined()
 
-      // 7. Verify GPT code generation
-      expect(enrichment.gptCode).toContain('mixpeek_')
+      // 7. Verify applyToGPT method exists (CSP-safe, no eval)
+      expect(typeof enrichment.applyToGPT).toBe('function')
 
-      // 8. Check yield recommendations
-      expect(enrichment.yield.suggestedFloorMultiplier).toBeDefined()
+      // 8. Check inventory classification
+      expect(enrichment.inventory.qualityMultiplier).toBeDefined()
     })
   })
 })

@@ -1,10 +1,18 @@
-# Mixpeek Google Ad Manager Connector
+# Mixpeek GPT Targeting Helper
 
-Privacy-safe contextual enrichment for Google Ad Manager using standard custom targeting keys.
+Client-side utility for generating Google Publisher Tag (GPT) custom targeting keys from contextual content signals.
+
+## Important Note
+
+This package is **not an official Google Ad Manager integration**.
+
+Google Ad Manager does not endorse or support third-party SDKs. This library is a **client-side utility** that helps publishers generate and apply standard custom targeting keys using Google Publisher Tags (GPT).
+
+All targeting keys emitted by this library are first-party and fully controlled by the publisher.
 
 ## Overview
 
-This connector transforms page content into GAM-compatible targeting signals without cookies, user IDs, or auction latency. It generates custom targeting keys that work with existing line items, appear in forecasting, and flow into reporting.
+This utility transforms page content into GPT-compatible targeting signals without cookies, user IDs, or auction latency. It generates custom targeting keys that work with existing line items, appear in forecasting, and flow into reporting.
 
 ### What This Provides
 
@@ -44,32 +52,27 @@ const result = await enricher.enrich({
   text: document.body.innerText.slice(0, 5000)
 })
 
-// Apply to GAM
-googletag.cmd.push(function() {
-  Object.entries(result.targeting).forEach(([key, value]) => {
-    googletag.pubads().setTargeting(key, value)
-  })
-})
+// Apply to GPT
+result.applyToGPT(googletag)
 ```
 
 ## GPT Integration
 
-### Option 1: Generated Code Snippet
-
-The connector generates ready-to-use GPT code:
+### Option 1: Direct Application (Recommended)
 
 ```javascript
 const result = await enricher.enrich(content)
-eval(result.gptCode) // Applies all targeting
+
+// Apply all targeting keys to GPT
+result.applyToGPT(googletag)
 ```
 
-### Option 2: Page-Level Targeting
+### Option 2: Manual Page-Level Targeting
 
 ```javascript
 const result = await enricher.enrich(content)
 
 googletag.cmd.push(function() {
-  // Apply all targeting keys
   Object.entries(result.targeting).forEach(([key, value]) => {
     googletag.pubads().setTargeting(key, value)
   })
@@ -94,7 +97,7 @@ googletag.cmd.push(function() {
 
 ## Ad Adjacency Tracking
 
-Prevent competitor ads from appearing adjacent to each other:
+Track competitive separation across ad requests:
 
 ```javascript
 // After ad renders
@@ -111,21 +114,24 @@ const nextSlot = await enricher.getSlotTargeting(content, 'next-slot-id')
 // nextSlot.targeting.mixpeek_adjacency_score indicates competitive separation
 ```
 
-## Yield Optimization
+## Inventory Classification
 
-Use yield recommendations for floor price decisions:
+Use content quality signals for inventory qualification:
 
 ```javascript
 const result = await enricher.enrich(content)
 
-if (result.yield.isPremium) {
-  // Apply premium floor
-  const floorPrice = baseFloor * result.yield.suggestedFloorMultiplier
+// Check if content qualifies as premium inventory
+if (result.inventory.isPremium) {
+  // Content depth is high, suitable for premium deals
 }
 
-if (result.yield.isBrandSafe) {
+if (result.inventory.isBrandSafe) {
   // Safe for all advertisers
 }
+
+// Suggested floor multiplier based on content quality
+// result.inventory.qualityMultiplier (e.g., 1.2 for premium content)
 ```
 
 ## PMP Deal Targeting
@@ -195,7 +201,7 @@ if (!validation.valid) {
 
 ## Error Handling
 
-The connector gracefully degrades on API errors:
+The utility gracefully degrades on API errors:
 
 ```javascript
 const result = await enricher.enrich(content)
@@ -275,12 +281,12 @@ AND mp_safe = high
 AND mp_qual = high
 ```
 
-## Value Proposition
+## Why Use This
 
-1. **Revenue uplift without identity risk** - No cookies, PPIDs, or user profiling
-2. **Higher CPMs via inventory differentiation** - Tell buyers what content is actually about
-3. **Fewer blunt brand-safety blocks** - Graded suitability instead of binary safe/unsafe
-4. **Better forecasting** - Forecast by content quality, not just URL
+1. **Privacy-safe signals** - No cookies, PPIDs, or user profiling
+2. **Inventory differentiation** - Tell buyers what content is actually about
+3. **Graded suitability** - Nuanced brand safety instead of binary safe/unsafe
+4. **Content-based forecasting** - Forecast by content quality, not just URL
 5. **No auction latency** - Keys evaluated inside GAM, no bid-time calls
 
 ## API Reference
@@ -294,6 +300,10 @@ Creates a new enricher instance.
 Enriches content and returns targeting keys.
 
 **Returns:** `Promise<EnrichmentResult>`
+
+### `result.applyToGPT(googletag)`
+
+Applies all targeting keys to GPT. Safe, CSP-compliant method.
 
 ### `enricher.getSlotTargeting(content, slotId)`
 

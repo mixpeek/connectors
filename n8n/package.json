@@ -1,6 +1,6 @@
 {
 	"name": "@mixpeek/n8n-nodes-mixpeek",
-	"version": "1.0.0",
+	"version": "1.0.1",
 	"description": "n8n community node for Mixpeek - multimodal data processing and semantic search API",
 	"license": "MIT",
 	"homepage": "https://github.com/mixpeek/connectors/tree/main/n8n#readme",

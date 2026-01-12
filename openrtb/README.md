@@ -2,6 +2,8 @@
 
 OpenRTB 2.5/2.6/3.0 reference implementation for contextual content enrichment.
 
+**[View all Mixpeek connectors →](https://mixpeek.com/connectors)**
+
 [![npm version](https://badge.fury.io/js/%40mixpeek%2Fopenrtb.svg)](https://www.npmjs.com/package/@mixpeek/openrtb)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 

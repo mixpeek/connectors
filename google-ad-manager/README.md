@@ -2,6 +2,8 @@
 
 Client-side utility for generating Google Publisher Tag (GPT) custom targeting keys from contextual content signals.
 
+**[View all Mixpeek connectors →](https://mixpeek.com/connectors)**
+
 ## Important Note
 
 This package is **not an official Google Ad Manager integration**.

@@ -1,0 +1,67 @@
+{
+	"name": "@mixpeek/n8n-nodes-mixpeek",
+	"version": "1.0.0",
+	"description": "n8n community node for Mixpeek - multimodal data processing and semantic search API",
+	"license": "MIT",
+	"homepage": "https://github.com/mixpeek/connectors/tree/main/n8n#readme",
+	"keywords": [
+		"n8n-community-node-package",
+		"mixpeek",
+		"multimodal",
+		"semantic-search",
+		"ai",
+		"embeddings",
+		"video-processing",
+		"document-processing"
+	],
+	"author": {
+		"name": "Mixpeek",
+		"email": "support@mixpeek.com"
+	},
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/mixpeek/connectors.git",
+		"directory": "n8n"
+	},
+	"bugs": {
+		"url": "https://github.com/mixpeek/connectors/issues"
+	},
+	"engines": {
+		"node": ">=18.0.0"
+	},
+	"scripts": {
+		"build": "tsc && npm run copy:icons",
+		"copy:icons": "cp nodes/Mixpeek/*.svg dist/nodes/Mixpeek/ 2>/dev/null || true && cp credentials/*.svg dist/credentials/ 2>/dev/null || true",
+		"dev": "tsc --watch",
+		"lint": "eslint nodes credentials --ext .ts",
+		"lint:fix": "eslint nodes credentials --ext .ts --fix",
+		"test": "jest",
+		"test:integration": "jest --testPathPattern=tests/integration",
+		"prepublishOnly": "npm run build"
+	},
+	"files": [
+		"dist"
+	],
+	"n8n": {
+		"n8nNodesApiVersion": 1,
+		"credentials": [
+			"dist/credentials/MixpeekApi.credentials.js"
+		],
+		"nodes": [
+			"dist/nodes/Mixpeek/Mixpeek.node.js"
+		]
+	},
+	"devDependencies": {
+		"@types/jest": "^29.5.12",
+		"@types/node": "^20.11.0",
+		"@typescript-eslint/eslint-plugin": "^7.0.0",
+		"@typescript-eslint/parser": "^7.0.0",
+		"eslint": "^8.57.0",
+		"jest": "^29.7.0",
+		"ts-jest": "^29.1.2",
+		"typescript": "^5.3.3"
+	},
+	"peerDependencies": {
+		"n8n-workflow": "*"
+	}
+}

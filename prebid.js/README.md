@@ -7,6 +7,8 @@
 
 **This is a Real-Time Data (RTD) module for Prebid.js that replaces cookie-based targeting with sub-100ms contextual signals.**
 
+**[View all Mixpeek connectors →](https://mixpeek.com/connectors)**
+
 [![npm version](https://img.shields.io/npm/v/@mixpeek/prebid.svg)](https://www.npmjs.com/package/@mixpeek/prebid)
 [![npm downloads](https://img.shields.io/npm/dm/@mixpeek/prebid.svg)](https://www.npmjs.com/package/@mixpeek/prebid)
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)

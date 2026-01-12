@@ -7,6 +7,8 @@
 
 **Reference implementation and test harness for server-side OpenRTB bid request enrichment.**
 
+**[View all Mixpeek connectors →](https://mixpeek.com/connectors)**
+
 [![npm version](https://img.shields.io/npm/v/@mixpeek/prebid-server.svg)](https://www.npmjs.com/package/@mixpeek/prebid-server)
 [![npm downloads](https://img.shields.io/npm/dm/@mixpeek/prebid-server.svg)](https://www.npmjs.com/package/@mixpeek/prebid-server)
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)

@@ -2,6 +2,8 @@
 
 Official connectors and integrations for the Mixpeek multimodal AI platform.
 
+**[View all connectors →](https://mixpeek.com/connectors)**
+
 ## Overview
 
 This repository contains production-ready connectors that integrate Mixpeek's contextual intelligence capabilities with various advertising, analytics, and content platforms. Each connector is designed to be easy to integrate, performant, and privacy-first.
@@ -12,9 +14,10 @@ This repository contains production-ready connectors that integrate Mixpeek's co
 |-----------|-------------|--------|---------------|---------|
 | [Prebid.js](./prebid.js) | Real-time contextual data provider for Prebid.js header bidding. Enriches bid requests with multimodal AI-powered content analysis including IAB taxonomy, brand safety, and sentiment. | ✅ Production | [README](./prebid.js/README.md) | v1.0.3 |
 | [Prebid Server](./prebid-server) | Reference implementation and test harness for server-side OpenRTB bid request enrichment. Provides identical field mappings to the Go data provider. | ✅ Production | [README](./prebid-server/README.md) | v1.0.1 |
-| [OpenRTB](./openrtb) | Privacy-first contextual enrichment for OpenRTB bid requests. OpenRTB 2.5/2.6/3.0 compliant output with sub-200ms processing for RTB latency requirements. | ✅ Production | [README](./openrtb/README.md) | v1.0.0 |
-| [Google Ad Manager](./google-ad-manager) | Privacy-safe contextual enrichment for Google Ad Manager using standard custom targeting keys. No cookies, user IDs, or auction latency. | ✅ Production | [README](./google-ad-manager/README.md) | v1.0.0 |
+| [OpenRTB](./openrtb) | OpenRTB 2.5/2.6/3.0 reference implementation for contextual content enrichment. Spec-compliant output with sub-200ms processing for RTB latency requirements. | ✅ Production | [README](./openrtb/README.md) | v1.0.0 |
+| [GPT Targeting Helper](./google-ad-manager) | Client-side utility for generating Google Publisher Tag (GPT) custom targeting keys from contextual content signals. | ✅ Production | [README](./google-ad-manager/README.md) | v1.0.0 |
 | [Cloudflare Workers](./cloudflare-workers) | Edge-based shared content intelligence layer for ads, analytics, and personalization. Cached content profiles with GAM, OpenRTB, and Analytics output formats. | ✅ Production | [README](./cloudflare-workers/README.md) | v1.0.0 |
+| [n8n](./n8n) | n8n community node for Mixpeek multimodal data processing and semantic search. Supports namespaces, buckets, collections, documents, retrievers, inference, and more. | ✅ Production | [README](./n8n/README.md) | v1.0.0 |
 
 ## Getting Started
 

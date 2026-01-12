@@ -2,6 +2,8 @@
 
 A **shared content intelligence layer at the edge** that provides cached content profiles for ads, analytics, and personalization systems.
 
+**[View all Mixpeek connectors →](https://mixpeek.com/connectors)**
+
 ## Architecture
 
 ```

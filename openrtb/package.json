@@ -1,0 +1,70 @@
+{
+  "name": "@mixpeek/openrtb",
+  "version": "1.0.0",
+  "description": "Mixpeek contextual enrichment connector for OpenRTB bid requests - privacy-first multimodal AI signals",
+  "type": "module",
+  "main": "dist/index.js",
+  "module": "src/index.js",
+  "types": "dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./src/index.js",
+      "require": "./dist/index.cjs"
+    }
+  },
+  "files": [
+    "dist",
+    "src",
+    "README.md",
+    "CHANGELOG.md"
+  ],
+  "scripts": {
+    "build": "node scripts/build.js",
+    "test": "node --experimental-vm-modules node_modules/jest/bin/jest.js --config jest.config.js",
+    "test:unit": "node --experimental-vm-modules node_modules/jest/bin/jest.js --config jest.config.js --testPathPattern=tests/unit",
+    "test:integration": "node --experimental-vm-modules node_modules/jest/bin/jest.js --config jest.config.js --testPathPattern=tests/integration",
+    "test:e2e": "node --experimental-vm-modules node_modules/jest/bin/jest.js --config jest.config.e2e.js --testPathPattern=tests/e2e",
+    "test:live": "node --experimental-vm-modules node_modules/jest/bin/jest.js --config jest.config.live.js --testPathPattern=tests/live-api",
+    "test:watch": "node --experimental-vm-modules node_modules/jest/bin/jest.js --config jest.config.js --watch",
+    "test:coverage": "node --experimental-vm-modules node_modules/jest/bin/jest.js --config jest.config.js --coverage",
+    "lint": "eslint src tests",
+    "lint:fix": "eslint src tests --fix",
+    "prepublishOnly": "npm run build && npm test"
+  },
+  "keywords": [
+    "openrtb",
+    "rtb",
+    "programmatic",
+    "advertising",
+    "contextual",
+    "targeting",
+    "mixpeek",
+    "ai",
+    "multimodal",
+    "privacy",
+    "ssp",
+    "dsp",
+    "bid-request",
+    "header-bidding"
+  ],
+  "author": "Mixpeek <support@mixpeek.com>",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/mixpeek/connectors.git",
+    "directory": "openrtb"
+  },
+  "bugs": {
+    "url": "https://github.com/mixpeek/connectors/issues"
+  },
+  "homepage": "https://github.com/mixpeek/connectors/tree/main/openrtb#readme",
+  "engines": {
+    "node": ">=14.0.0"
+  },
+  "devDependencies": {
+    "jest": "^29.7.0",
+    "eslint": "^8.57.0"
+  },
+  "peerDependencies": {},
+  "dependencies": {}
+}

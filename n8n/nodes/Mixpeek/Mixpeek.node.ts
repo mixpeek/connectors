@@ -6,6 +6,7 @@ import {
 	IDataObject,
 	NodeOperationError,
 	IHttpRequestMethods,
+	NodeConnectionTypes,
 } from 'n8n-workflow';
 
 // Helper functions outside the class
@@ -469,8 +470,8 @@ export class Mixpeek implements INodeType {
 		defaults: {
 			name: 'Mixpeek',
 		},
-		inputs: ['main'],
-		outputs: ['main'],
+		inputs: [NodeConnectionTypes.Main],
+		outputs: [NodeConnectionTypes.Main],
 		credentials: [
 			{
 				name: 'mixpeekApi',

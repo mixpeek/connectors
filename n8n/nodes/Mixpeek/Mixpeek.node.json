@@ -1,0 +1,17 @@
+{
+	"node": "n8n-nodes-base.mixpeek",
+	"nodeVersion": "1.0",
+	"codexVersion": "1.0",
+	"categories": ["Data & Storage", "Development"],
+	"subcategories": {
+		"Data & Storage": ["Data Warehousing"]
+	},
+	"resources": {
+		"primaryDocumentation": [
+			{
+				"url": "https://docs.mixpeek.com"
+			}
+		]
+	},
+	"alias": ["mixpeek", "multimodal", "semantic search", "embeddings", "ai", "vector"]
+}

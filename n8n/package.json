@@ -1,6 +1,6 @@
 {
 	"name": "@mixpeek/n8n-nodes-mixpeek",
-	"version": "1.0.2",
+	"version": "1.0.3",
 	"description": "n8n community node for Mixpeek - multimodal data processing and semantic search API",
 	"license": "MIT",
 	"homepage": "https://github.com/mixpeek/connectors/tree/main/n8n#readme",
@@ -31,7 +31,7 @@
 	},
 	"scripts": {
 		"build": "tsc && npm run copy:icons",
-		"copy:icons": "cp nodes/Mixpeek/*.svg dist/nodes/Mixpeek/ 2>/dev/null || true && cp credentials/*.svg dist/credentials/ 2>/dev/null || true",
+		"copy:icons": "cp nodes/Mixpeek/*.svg dist/nodes/Mixpeek/ 2>/dev/null || true && cp nodes/Mixpeek/*.json dist/nodes/Mixpeek/ 2>/dev/null || true && cp credentials/*.svg dist/credentials/ 2>/dev/null || true",
 		"dev": "tsc --watch",
 		"lint": "eslint nodes credentials --ext .ts",
 		"lint:fix": "eslint nodes credentials --ext .ts --fix",

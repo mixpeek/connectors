@@ -565,7 +565,7 @@ pbjs.setConfig({ mixpeek: {...} }); // Too early
 ## Support
 
 - **Documentation**: [docs.mixpeek.com](https://docs.mixpeek.com)
-- **Email**: support@mixpeek.com
+- **Email**: info@mixpeek.com
 - **GitHub Issues**: [github.com/mixpeek/prebid/issues](https://github.com/mixpeek/prebid/issues)
 - **Slack Community**: [Join our Slack](https://mixpeek.com/slack)
 

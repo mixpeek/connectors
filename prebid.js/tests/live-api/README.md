@@ -203,5 +203,5 @@ For issues with the live API or tests:
 
 - **Documentation**: https://docs.mixpeek.com
 - **API Status**: https://status.mixpeek.com
-- **Support**: support@mixpeek.com
+- **Support**: info@mixpeek.com
 

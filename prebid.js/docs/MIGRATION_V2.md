@@ -488,7 +488,7 @@ Need help with migration?
 - **Documentation:** [Full Integration Guide](integration-guide.md)
 - **Examples:** See `examples/` directory
 - **Issues:** [GitHub Issues](https://github.com/mixpeek/prebid/issues)
-- **Email:** support@mixpeek.com
+- **Email:** info@mixpeek.com
 - **Slack:** [Join our Slack](https://mixpeek.com/slack)
 
 ---

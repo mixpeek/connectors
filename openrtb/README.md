@@ -484,4 +484,4 @@ async function evaluateBidRequest(bidRequest) {
 
 - GitHub Issues: [github.com/mixpeek/connectors/issues](https://github.com/mixpeek/connectors/issues)
 - Documentation: [docs.mixpeek.com](https://docs.mixpeek.com)
-- Email: support@mixpeek.com
+- Email: info@mixpeek.com

@@ -325,7 +325,7 @@ Before deployment, these tests confirm:
 - 📚 [Testing Guide](TESTING.md) - Comprehensive testing documentation
 - 📖 [Quick Start](QUICKSTART.md) - Get running in 5 minutes
 - 🔧 [Integration Guide](docs/integration-guide.md) - Full integration docs
-- 💬 Email: support@mixpeek.com
+- 💬 Email: info@mixpeek.com
 
 ---
 

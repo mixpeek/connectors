@@ -450,6 +450,6 @@ Contact Mixpeek to increase limits for production use.
 For questions or issues:
 
 - **Documentation**: [docs.mixpeek.com](https://docs.mixpeek.com)
-- **Email**: support@mixpeek.com
+- **Email**: info@mixpeek.com
 - **GitHub**: [github.com/mixpeek/prebid](https://github.com/mixpeek/prebid)
 

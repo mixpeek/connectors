@@ -186,4 +186,4 @@ MIT
 ## Support
 
 - [GitHub Issues](https://github.com/mixpeek/connectors/issues)
-- [support@mixpeek.com](mailto:support@mixpeek.com)
+- [info@mixpeek.com](mailto:info@mixpeek.com)

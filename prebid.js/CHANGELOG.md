@@ -148,6 +148,6 @@ For questions, issues, or feature requests:
 
 - **Documentation**: https://docs.mixpeek.com
 - **GitHub Issues**: https://github.com/mixpeek/prebid/issues
-- **Email**: support@mixpeek.com
+- **Email**: info@mixpeek.com
 - **Slack**: https://mixpeek.com/slack
 

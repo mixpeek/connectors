@@ -52,11 +52,11 @@ We welcome contributions! If you'd like to:
 
 - Report a bug or request a feature, open an issue
 - Contribute code, submit a pull request
-- Build a new connector, reach out to us at support@mixpeek.com
+- Build a new connector, reach out to us at info@mixpeek.com
 
 ## Support
 
-- **Email**: support@mixpeek.com
+- **Email**: info@mixpeek.com
 - **Documentation**: [docs.mixpeek.com](https://docs.mixpeek.com)
 - **GitHub Issues**: [Create an issue](https://github.com/mixpeek/connectors/issues)
 - **Slack Community**: [Join our Slack](https://mixpeek.com/slack)

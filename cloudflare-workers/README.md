@@ -441,6 +441,6 @@ Apache 2.0 - See [LICENSE](LICENSE) for details.
 
 ## Support
 
-- **Email**: support@mixpeek.com
+- **Email**: info@mixpeek.com
 - **Documentation**: [docs.mixpeek.com](https://docs.mixpeek.com)
 - **GitHub Issues**: [Create an issue](https://github.com/mixpeek/connectors/issues)

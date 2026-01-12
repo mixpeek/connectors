@@ -298,5 +298,5 @@ This can be changed in:
 
 For endpoint-specific issues:
 - **Production API**: Check [https://status.mixpeek.com](https://status.mixpeek.com)
-- **General help**: support@mixpeek.com
+- **General help**: info@mixpeek.com
 

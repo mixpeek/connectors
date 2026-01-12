@@ -216,7 +216,7 @@ testTimeout: 60000 // 60 seconds
 ## Support
 
 - **Documentation**: https://docs.mixpeek.com
-- **Email**: support@mixpeek.com
+- **Email**: info@mixpeek.com
 - **GitHub Issues**: https://github.com/mixpeek/prebid/issues
 
 ## What's Next?

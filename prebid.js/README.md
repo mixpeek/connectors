@@ -354,7 +354,7 @@ npm run test:coverage
 
 - **Documentation**: [docs.mixpeek.com](https://docs.mixpeek.com)
 - **GitHub Issues**: [Create an issue](https://github.com/mixpeek/prebid/issues)
-- **Email**: support@mixpeek.com
+- **Email**: info@mixpeek.com
 
 ---
 

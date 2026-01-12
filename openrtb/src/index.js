@@ -49,7 +49,7 @@ export {
   extractDomain
 } from './utils/helpers.js';
 
-// IAB mapping
+// IAB Content Taxonomy mapping
 export {
   IAB_TAXONOMY,
   keywordToIAB,
@@ -60,6 +60,14 @@ export {
   getTier1Categories,
   isValidCategory
 } from './utils/iabMapping.js';
+
+// IAB Ad Product Taxonomy integration
+export {
+  formatProductTaxonomy,
+  enrichWithProductTaxonomy,
+  formatProductTargetingKeys,
+  extractProductInfo
+} from './utils/productTaxonomy.js';
 
 // Logger
 export { getLogger, createLogger, Logger, LOG_LEVELS } from './utils/logger.js';

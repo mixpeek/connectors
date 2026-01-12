@@ -1,0 +1,68 @@
+{
+  "name": "@mixpeek/iab-ad-product-taxonomy",
+  "version": "1.0.0",
+  "description": "IAB Ad Product Taxonomy mapper for standardized product classification with semantic and deterministic mapping",
+  "type": "module",
+  "main": "dist/index.js",
+  "module": "src/index.js",
+  "types": "dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./src/index.js",
+      "require": "./dist/index.cjs"
+    }
+  },
+  "files": [
+    "dist",
+    "src",
+    "README.md",
+    "CHANGELOG.md"
+  ],
+  "scripts": {
+    "build": "node scripts/build.js",
+    "test": "node --experimental-vm-modules node_modules/jest/bin/jest.js --config jest.config.js",
+    "test:unit": "node --experimental-vm-modules node_modules/jest/bin/jest.js --config jest.config.js --testPathPattern=tests/unit",
+    "test:integration": "node --experimental-vm-modules node_modules/jest/bin/jest.js --config jest.config.js --testPathPattern=tests/integration",
+    "test:e2e": "node --experimental-vm-modules node_modules/jest/bin/jest.js --config jest.config.e2e.js --testPathPattern=tests/e2e",
+    "test:live": "node --experimental-vm-modules node_modules/jest/bin/jest.js --config jest.config.live.js --testPathPattern=tests/live-api",
+    "test:watch": "node --experimental-vm-modules node_modules/jest/bin/jest.js --config jest.config.js --watch",
+    "test:coverage": "node --experimental-vm-modules node_modules/jest/bin/jest.js --config jest.config.js --coverage",
+    "lint": "eslint src tests",
+    "lint:fix": "eslint src tests --fix",
+    "prepublishOnly": "npm run build && npm test"
+  },
+  "keywords": [
+    "iab",
+    "iab-taxonomy",
+    "ad-product-taxonomy",
+    "product-classification",
+    "advertising",
+    "adtech",
+    "openrtb",
+    "programmatic",
+    "contextual",
+    "brand-safety",
+    "taxonomy-mapping",
+    "mixpeek"
+  ],
+  "author": "Mixpeek <info@mixpeek.com>",
+  "license": "Apache-2.0",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/mixpeek/connectors.git",
+    "directory": "iab-ad-product-taxonomy"
+  },
+  "bugs": {
+    "url": "https://github.com/mixpeek/connectors/issues"
+  },
+  "homepage": "https://github.com/mixpeek/connectors/tree/main/iab-ad-product-taxonomy#readme",
+  "engines": {
+    "node": ">=14.0.0"
+  },
+  "devDependencies": {
+    "jest": "^29.7.0",
+    "eslint": "^8.57.0"
+  },
+  "peerDependencies": {},
+  "dependencies": {}
+}

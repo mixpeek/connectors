@@ -1,0 +1,65 @@
+{
+  "name": "@mixpeek/iab-brand-safety",
+  "version": "1.0.0",
+  "description": "IAB Brand Safety and Suitability classifier for content and product risk assessment",
+  "type": "module",
+  "main": "dist/index.js",
+  "module": "src/index.js",
+  "exports": {
+    ".": {
+      "import": "./src/index.js",
+      "require": "./dist/index.cjs"
+    }
+  },
+  "files": [
+    "src",
+    "dist",
+    "README.md",
+    "LICENSE"
+  ],
+  "scripts": {
+    "build": "node scripts/build.js",
+    "test": "node --experimental-vm-modules node_modules/jest/bin/jest.js",
+    "test:unit": "npm test -- --testPathPattern=tests/unit",
+    "test:integration": "npm test -- --testPathPattern=tests/integration",
+    "test:coverage": "npm test -- --coverage",
+    "lint": "eslint src tests",
+    "prepublishOnly": "npm run build && npm test"
+  },
+  "keywords": [
+    "iab",
+    "brand-safety",
+    "suitability",
+    "content-classification",
+    "ad-tech",
+    "brand-protection",
+    "garm",
+    "mixpeek"
+  ],
+  "author": "Mixpeek <info@mixpeek.com>",
+  "license": "Apache-2.0",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/mixpeek/connectors.git",
+    "directory": "iab-brand-safety"
+  },
+  "homepage": "https://mixpeek.com/connectors",
+  "bugs": {
+    "url": "https://github.com/mixpeek/connectors/issues"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "dependencies": {},
+  "devDependencies": {
+    "jest": "^29.7.0"
+  },
+  "peerDependencies": {
+    "@mixpeek/iab-ad-product-taxonomy": "^1.0.0"
+  },
+  "peerDependenciesMeta": {
+    "@mixpeek/iab-ad-product-taxonomy": {
+      "optional": true
+    }
+  }
+}

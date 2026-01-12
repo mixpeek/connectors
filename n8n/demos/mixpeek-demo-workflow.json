@@ -1,5 +1,5 @@
 {
-  "name": "Mixpeek Demo - Full Workflow",
+  "name": "Mixpeek Demo - Ready to Import",
   "nodes": [
     {
       "parameters": {},
@@ -11,15 +11,33 @@
     },
     {
       "parameters": {
-        "resource": "bucket",
-        "operation": "create",
-        "bucketName": "demo-bucket"
+        "resource": "namespace",
+        "operation": "get",
+        "namespaceId": "ns_1e5bd4df6f"
       },
-      "id": "create-bucket",
-      "name": "1. Create Bucket",
+      "id": "get-namespace",
+      "name": "1. Get Namespace",
       "type": "@mixpeek/n8n-nodes-mixpeek.mixpeek",
       "typeVersion": 1,
-      "position": [300, 300],
+      "position": [300, 200],
+      "credentials": {
+        "mixpeekApi": {
+          "id": "",
+          "name": "Mixpeek API"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "bucket",
+        "operation": "get",
+        "bucketId": "bkt_17018bc1"
+      },
+      "id": "get-bucket",
+      "name": "2. Get Bucket",
+      "type": "@mixpeek/n8n-nodes-mixpeek.mixpeek",
+      "typeVersion": 1,
+      "position": [300, 400],
       "credentials": {
         "mixpeekApi": {
           "id": "",
@@ -30,14 +48,11 @@
     {
       "parameters": {
         "resource": "collection",
-        "operation": "create",
-        "collectionName": "demo-collection",
-        "additionalFields": {
-          "bucket_id": "={{ $json.bucket_id }}"
-        }
+        "operation": "get",
+        "collectionId": "col_6ca83499cd"
       },
-      "id": "create-collection",
-      "name": "2. Create Collection",
+      "id": "get-collection",
+      "name": "3. Get Collection",
       "type": "@mixpeek/n8n-nodes-mixpeek.mixpeek",
       "typeVersion": 1,
       "position": [500, 300],
@@ -52,34 +67,15 @@
       "parameters": {
         "resource": "upload",
         "operation": "create",
-        "bucketId": "={{ $('1. Create Bucket').item.json.bucket_id }}",
-        "filename": "sample-image.jpg",
+        "bucketId": "bkt_17018bc1",
+        "filename": "demo_image.jpg",
         "contentType": "image/jpeg"
       },
       "id": "create-upload",
-      "name": "3. Get Upload URL",
+      "name": "4. Get Upload URL",
       "type": "@mixpeek/n8n-nodes-mixpeek.mixpeek",
       "typeVersion": 1,
-      "position": [700, 300],
-      "credentials": {
-        "mixpeekApi": {
-          "id": "",
-          "name": "Mixpeek API"
-        }
-      }
-    },
-    {
-      "parameters": {
-        "resource": "upload",
-        "operation": "confirm",
-        "bucketId": "={{ $('1. Create Bucket').item.json.bucket_id }}",
-        "uploadId": "={{ $json.upload_id }}"
-      },
-      "id": "confirm-upload",
-      "name": "4. Confirm Upload",
-      "type": "@mixpeek/n8n-nodes-mixpeek.mixpeek",
-      "typeVersion": 1,
-      "position": [900, 300],
+      "position": [700, 200],
       "credentials": {
         "mixpeekApi": {
           "id": "",
@@ -91,14 +87,14 @@
       "parameters": {
         "resource": "retriever",
         "operation": "execute",
-        "retrieverId": "your-retriever-id",
-        "query": "find images with people"
+        "retrieverId": "ret_df6b91279e4a84",
+        "query": "colorful shapes"
       },
       "id": "search",
-      "name": "5. Search Content",
+      "name": "5. Search Images",
       "type": "@mixpeek/n8n-nodes-mixpeek.mixpeek",
       "typeVersion": 1,
-      "position": [1100, 300],
+      "position": [700, 400],
       "credentials": {
         "mixpeekApi": {
           "id": "",
@@ -112,51 +108,50 @@
       "main": [
         [
           {
-            "node": "1. Create Bucket",
+            "node": "1. Get Namespace",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "2. Get Bucket",
             "type": "main",
             "index": 0
           }
         ]
       ]
     },
-    "1. Create Bucket": {
+    "1. Get Namespace": {
       "main": [
         [
           {
-            "node": "2. Create Collection",
+            "node": "3. Get Collection",
             "type": "main",
             "index": 0
           }
         ]
       ]
     },
-    "2. Create Collection": {
+    "2. Get Bucket": {
       "main": [
         [
           {
-            "node": "3. Get Upload URL",
+            "node": "3. Get Collection",
             "type": "main",
             "index": 0
           }
         ]
       ]
     },
-    "3. Get Upload URL": {
+    "3. Get Collection": {
       "main": [
         [
           {
-            "node": "4. Confirm Upload",
+            "node": "4. Get Upload URL",
             "type": "main",
             "index": 0
-          }
-        ]
-      ]
-    },
-    "4. Confirm Upload": {
-      "main": [
-        [
+          },
           {
-            "node": "5. Search Content",
+            "node": "5. Search Images",
             "type": "main",
             "index": 0
           }

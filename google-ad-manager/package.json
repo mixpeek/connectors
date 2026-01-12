@@ -1,0 +1,66 @@
+{
+  "name": "@mixpeek/google-ad-manager",
+  "version": "1.0.0",
+  "type": "module",
+  "description": "Mixpeek contextual enrichment for Google Ad Manager - Privacy-safe targeting keys with IAB taxonomy, sentiment, brand safety, and ad adjacency signals",
+  "main": "dist/index.js",
+  "module": "src/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "node scripts/build.js",
+    "test": "node --experimental-vm-modules node_modules/jest/bin/jest.js",
+    "test:unit": "node --experimental-vm-modules node_modules/jest/bin/jest.js --testMatch='**/tests/unit/**/*.test.js'",
+    "test:live": "node --experimental-vm-modules node_modules/jest/bin/jest.js --testMatch='**/tests/live/**/*.test.js'",
+    "test:e2e": "node --experimental-vm-modules node_modules/jest/bin/jest.js --testMatch='**/tests/e2e/**/*.test.js'",
+    "test:all": "npm run test:unit && npm run test:e2e",
+    "lint": "eslint src/",
+    "prepublishOnly": "npm run build && npm run test"
+  },
+  "keywords": [
+    "google-ad-manager",
+    "gam",
+    "dfp",
+    "gpt",
+    "contextual",
+    "advertising",
+    "targeting",
+    "cookie-free",
+    "privacy",
+    "mixpeek",
+    "ai",
+    "multimodal",
+    "iab",
+    "taxonomy",
+    "brand-safety",
+    "ad-adjacency",
+    "sentiment",
+    "yield-optimization",
+    "pmp"
+  ],
+  "author": "Mixpeek",
+  "license": "Apache-2.0",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/mixpeek/connectors.git",
+    "directory": "google-ad-manager"
+  },
+  "homepage": "https://github.com/mixpeek/connectors/tree/main/google-ad-manager#readme",
+  "bugs": {
+    "url": "https://github.com/mixpeek/connectors/issues"
+  },
+  "engines": {
+    "node": ">=16.0.0"
+  },
+  "files": [
+    "dist/",
+    "src/",
+    "README.md",
+    "LICENSE"
+  ],
+  "devDependencies": {
+    "jest": "^29.0.0",
+    "eslint": "^8.0.0"
+  },
+  "peerDependencies": {},
+  "dependencies": {}
+}

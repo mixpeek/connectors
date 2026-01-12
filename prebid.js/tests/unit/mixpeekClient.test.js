@@ -87,26 +87,37 @@ describe('MixpeekClient', () => {
   })
 
   describe('processContent', () => {
-    it('should process content with feature extractors', async () => {
-      const mockResponse = {
+    it('should process content and return enrichments', async () => {
+      const mockDocResponse = {
         document_id: 'doc_123',
-        enrichments: {
-          taxonomies: [
-            {
-              label: 'Technology',
-              node_id: 'node_tech',
-              path: ['tech'],
-              score: 0.95
-            }
-          ]
-        }
+        collection_id: 'col_123'
       }
 
       global.fetch.mockResolvedValueOnce({
         ok: true,
         status: 200,
-        json: async () => mockResponse
+        json: async () => mockDocResponse
       })
+
+      const content = {
+        url: 'https://example.com/article',
+        title: 'Test Article',
+        text: 'Article content about technology and innovation'
+      }
+
+      const result = await client.processContent('col_123', content, ['taxonomy'])
+
+      // Should return enriched result with document info and local enrichments
+      expect(result.document_id).toBe('doc_123')
+      expect(result.collection_id).toBe('col_123')
+      expect(result.enrichments).toBeDefined()
+      expect(result.enrichments.keywords).toBeDefined()
+      expect(result.enrichments.sentiment).toBeDefined()
+      expect(global.fetch).toHaveBeenCalledTimes(1)
+    })
+
+    it('should return fallback enrichments on API error', async () => {
+      global.fetch.mockRejectedValueOnce(new Error('API Error'))
 
       const content = {
         url: 'https://example.com/article',
@@ -114,10 +125,12 @@ describe('MixpeekClient', () => {
         text: 'Article content'
       }
 
+      // Should not throw, returns fallback enrichments
       const result = await client.processContent('col_123', content, ['taxonomy'])
 
-      expect(result).toEqual(mockResponse)
-      expect(global.fetch).toHaveBeenCalledTimes(1)
+      expect(result.document_id).toBeNull()
+      expect(result.enrichments).toBeDefined()
+      expect(result.enrichments.keywords).toBeDefined()
     })
   })
 

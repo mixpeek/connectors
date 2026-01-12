@@ -11,6 +11,13 @@ module.exports = {
   setupFilesAfterEnv: ['<rootDir>/tests/live-api/setup.js'],
   testTimeout: 30000, // 30 seconds for API calls
   verbose: true,
+  transform: {
+    '^.+\\.js$': ['babel-jest', {
+      presets: [
+        ['@babel/preset-env', { targets: { node: 'current' } }]
+      ]
+    }]
+  },
   collectCoverageFrom: [
     'src/**/*.js',
     '!src/**/*.test.js'

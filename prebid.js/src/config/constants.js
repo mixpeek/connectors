@@ -43,14 +43,19 @@ export const CONTENT_MODES = {
   IMAGE: 'image'
 }
 
-// Feature Extractors
+// Feature Extractors (actual Mixpeek API extractors)
 export const FEATURE_EXTRACTORS = {
-  TAXONOMY: 'taxonomy',
-  BRAND_SAFETY: 'brand-safety',
-  KEYWORDS: 'keywords',
-  SENTIMENT: 'sentiment',
-  CLUSTERING: 'clustering',
-  EMBEDDING: 'embedding'
+  // Actual Mixpeek extractors
+  TEXT: 'text_extractor_v1',
+  SENTIMENT: 'sentiment_classifier_v1',
+  IMAGE: 'image_extractor_v1',
+  MULTIMODAL: 'multimodal_extractor_v1',
+  // Legacy aliases for backwards compatibility
+  TAXONOMY: 'text_extractor_v1',
+  BRAND_SAFETY: 'sentiment_classifier_v1',
+  KEYWORDS: 'text_extractor_v1',
+  CLUSTERING: 'text_extractor_v1',
+  EMBEDDING: 'text_extractor_v1'
 }
 
 // Targeting Key Prefixes

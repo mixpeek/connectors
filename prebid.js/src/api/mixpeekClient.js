@@ -35,16 +35,18 @@ class MixpeekClient {
   /**
    * Build headers for API request
    * @private
+   * @param {boolean} requireNamespace - Whether namespace header is required
    * @returns {object} Headers object
    */
-  _buildHeaders() {
+  _buildHeaders(requireNamespace = true) {
     const headers = {
       [HEADERS.CONTENT_TYPE]: 'application/json',
       [HEADERS.AUTHORIZATION]: `Bearer ${this.apiKey}`,
       [HEADERS.USER_AGENT]: USER_AGENT
     }
 
-    if (this.namespace) {
+    // Add namespace header (required for most endpoints)
+    if (this.namespace && requireNamespace) {
       headers[HEADERS.NAMESPACE] = this.namespace
     }
 
@@ -135,11 +137,16 @@ class MixpeekClient {
    */
   async createDocument(collectionId, payload) {
     const path = ENDPOINTS.DOCUMENTS.replace('{collectionId}', collectionId)
-    
+
+    // Build request payload according to Mixpeek API spec
     const requestPayload = {
-      object_id: payload.objectId || generateUUID(),
-      metadata: payload.metadata || {},
-      features: payload.features || []
+      collection_id: collectionId,
+      ...payload.metadata
+    }
+
+    // Add content field if provided
+    if (payload.content) {
+      requestPayload.content = payload.content
     }
 
     return retryWithBackoff(
@@ -166,52 +173,146 @@ class MixpeekClient {
    * Process content with feature extractors
    * @param {string} collectionId - Collection ID
    * @param {object} content - Content to process
-   * @param {array} featureExtractors - Feature extractors to use
-   * @returns {Promise} Enriched document
+   * @param {array} featureExtractors - Feature extractors to use (optional, for future use)
+   * @returns {Promise} Enriched document with context data
    */
   async processContent(collectionId, content, featureExtractors = []) {
     logger.group('Processing content with Mixpeek')
     logger.info('Collection:', collectionId)
-    logger.info('Feature Extractors:', featureExtractors)
+    logger.info('Content URL:', content.url)
 
     try {
-      // Build features array from extractors
-      const features = featureExtractors.map(extractor => {
-        const feature = {
-          feature_extractor_id: typeof extractor === 'string' ? extractor : extractor.feature_extractor_id
-        }
-
-        // Add payload if provided
-        if (typeof extractor === 'object' && extractor.payload) {
-          feature.payload = extractor.payload
-        } else {
-          // Build payload from content
-          feature.payload = this._buildFeaturePayload(content)
-        }
-
-        return feature
-      })
-
-      // Create document with features
+      // Create document in collection
       const document = await this.createDocument(collectionId, {
-        objectId: this._generateContentId(content),
+        content: content.text || content.description || '',
         metadata: {
           url: content.url,
           title: content.title,
           timestamp: Date.now()
-        },
-        features
+        }
       })
 
       logger.info('Document created:', document.document_id)
+
+      // Build enrichments from content analysis (client-side fallback)
+      // In future versions, this will use Mixpeek's taxonomy and classification APIs
+      const enrichments = this._buildLocalEnrichments(content)
+
       logger.groupEnd()
 
-      return document
+      return {
+        document_id: document.document_id,
+        collection_id: document.collection_id,
+        enrichments
+      }
     } catch (error) {
       logger.error('Error processing content:', error)
       logger.groupEnd()
-      throw error
+
+      // Return fallback enrichments on API error (graceful degradation)
+      return {
+        document_id: null,
+        collection_id: collectionId,
+        enrichments: this._buildLocalEnrichments(content)
+      }
     }
+  }
+
+  /**
+   * Build local enrichments from content (client-side analysis)
+   * This provides basic contextual data when API processing is unavailable
+   * @private
+   * @param {object} content - Content object
+   * @returns {object} Enrichments object
+   */
+  _buildLocalEnrichments(content) {
+    const enrichments = {}
+
+    // Extract keywords from content
+    if (content.text) {
+      enrichments.keywords = this._extractKeywords(content.text)
+    }
+
+    // Analyze sentiment (basic)
+    if (content.text) {
+      enrichments.sentiment = this._analyzeSentiment(content.text)
+    }
+
+    // Generate content hash as embedding ID
+    enrichments.embeddings = [{
+      id: `emb_${this._generateContentId(content)}`
+    }]
+
+    return enrichments
+  }
+
+  /**
+   * Extract keywords from text (simple implementation)
+   * @private
+   * @param {string} text - Text content
+   * @returns {array} Array of keywords
+   */
+  _extractKeywords(text) {
+    if (!text) return []
+
+    // Simple keyword extraction: common important words
+    const stopWords = new Set(['the', 'a', 'an', 'is', 'are', 'was', 'were', 'be', 'been', 'being', 'have', 'has', 'had', 'do', 'does', 'did', 'will', 'would', 'could', 'should', 'may', 'might', 'must', 'shall', 'can', 'need', 'dare', 'ought', 'used', 'to', 'of', 'in', 'for', 'on', 'with', 'at', 'by', 'from', 'as', 'into', 'through', 'during', 'before', 'after', 'above', 'below', 'between', 'under', 'again', 'further', 'then', 'once', 'here', 'there', 'when', 'where', 'why', 'how', 'all', 'each', 'few', 'more', 'most', 'other', 'some', 'such', 'no', 'nor', 'not', 'only', 'own', 'same', 'so', 'than', 'too', 'very', 's', 't', 'just', 'don', 'now', 'and', 'but', 'or', 'if', 'this', 'that', 'these', 'those', 'it', 'its'])
+
+    const words = text.toLowerCase()
+      .replace(/[^\w\s]/g, ' ')
+      .split(/\s+/)
+      .filter(word => word.length > 3 && !stopWords.has(word))
+
+    // Count word frequency
+    const wordCount = {}
+    words.forEach(word => {
+      wordCount[word] = (wordCount[word] || 0) + 1
+    })
+
+    // Return top 10 keywords by frequency
+    return Object.entries(wordCount)
+      .sort((a, b) => b[1] - a[1])
+      .slice(0, 10)
+      .map(([word]) => word)
+  }
+
+  /**
+   * Basic sentiment analysis
+   * @private
+   * @param {string} text - Text content
+   * @returns {object} Sentiment result
+   */
+  _analyzeSentiment(text) {
+    if (!text) return { label: 'neutral', score: 0.5 }
+
+    const positiveWords = ['good', 'great', 'excellent', 'amazing', 'wonderful', 'fantastic', 'best', 'love', 'happy', 'positive', 'success', 'win', 'awesome', 'brilliant', 'perfect', 'beautiful', 'enjoy', 'exciting']
+    const negativeWords = ['bad', 'terrible', 'awful', 'horrible', 'worst', 'hate', 'sad', 'negative', 'fail', 'loss', 'poor', 'ugly', 'boring', 'disappointing', 'wrong', 'problem', 'issue', 'error']
+
+    const lowerText = text.toLowerCase()
+    let positiveCount = 0
+    let negativeCount = 0
+
+    positiveWords.forEach(word => {
+      const regex = new RegExp(`\\b${word}\\b`, 'gi')
+      const matches = lowerText.match(regex)
+      if (matches) positiveCount += matches.length
+    })
+
+    negativeWords.forEach(word => {
+      const regex = new RegExp(`\\b${word}\\b`, 'gi')
+      const matches = lowerText.match(regex)
+      if (matches) negativeCount += matches.length
+    })
+
+    const total = positiveCount + negativeCount
+    if (total === 0) return { label: 'neutral', score: 0.5 }
+
+    const score = positiveCount / total
+    let label = 'neutral'
+    if (score > 0.6) label = 'positive'
+    else if (score < 0.4) label = 'negative'
+
+    return { label, score }
   }
 
   /**

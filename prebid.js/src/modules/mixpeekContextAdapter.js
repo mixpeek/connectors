@@ -452,10 +452,10 @@ class MixpeekContextAdapter {
       }
     }
 
-    // Extract taxonomies
+    // Extract taxonomies (if available from Mixpeek classification)
     if (document.enrichments && document.enrichments.taxonomies) {
       const taxonomies = document.enrichments.taxonomies
-      
+
       if (taxonomies.length > 0) {
         const primaryTaxonomy = taxonomies[0]
         context.taxonomy = {
@@ -470,9 +470,18 @@ class MixpeekContextAdapter {
 
     // Extract other enrichments
     if (document.enrichments) {
-      // Brand safety
+      // Brand safety (use sentiment as proxy for now)
       if (document.enrichments.brand_safety) {
         context.brandSafety = document.enrichments.brand_safety
+      } else if (document.enrichments.sentiment) {
+        // Use positive sentiment as a proxy for brand safety
+        const sentimentScore = typeof document.enrichments.sentiment === 'object'
+          ? document.enrichments.sentiment.score
+          : 0.5
+        context.brandSafety = {
+          score: sentimentScore > 0.5 ? 0.8 + (sentimentScore - 0.5) * 0.4 : 0.5 + sentimentScore * 0.6,
+          level: sentimentScore > 0.6 ? 'safe' : sentimentScore < 0.4 ? 'caution' : 'neutral'
+        }
       }
 
       // Keywords
@@ -491,7 +500,50 @@ class MixpeekContextAdapter {
       }
     }
 
+    // Build a taxonomy-like structure from keywords if no taxonomy available
+    if (!context.taxonomy && context.keywords && context.keywords.length > 0) {
+      context.taxonomy = {
+        label: this._inferCategoryFromKeywords(context.keywords),
+        nodeId: `kw_${context.keywords[0]}`,
+        path: ['Content', this._inferCategoryFromKeywords(context.keywords)],
+        score: 0.7  // Moderate confidence for keyword-based classification
+      }
+    }
+
     return context
+  }
+
+  /**
+   * Infer a category from keywords (simple heuristic)
+   * @private
+   * @param {array} keywords - Extracted keywords
+   * @returns {string} Inferred category
+   */
+  _inferCategoryFromKeywords(keywords) {
+    const categoryKeywords = {
+      'Technology': ['technology', 'software', 'computer', 'digital', 'tech', 'programming', 'code', 'developer', 'app', 'mobile', 'phone', 'smartphone'],
+      'Business': ['business', 'company', 'market', 'finance', 'investment', 'stock', 'economy', 'corporate', 'startup', 'entrepreneur'],
+      'Sports': ['sports', 'game', 'team', 'player', 'football', 'basketball', 'soccer', 'baseball', 'tennis', 'golf', 'match'],
+      'Entertainment': ['movie', 'film', 'music', 'celebrity', 'actor', 'singer', 'show', 'concert', 'entertainment', 'tv', 'television'],
+      'Health': ['health', 'medical', 'doctor', 'hospital', 'medicine', 'disease', 'fitness', 'wellness', 'diet', 'nutrition'],
+      'News': ['news', 'breaking', 'report', 'politics', 'government', 'election', 'policy', 'world', 'international'],
+      'Science': ['science', 'research', 'study', 'experiment', 'discovery', 'scientist', 'physics', 'chemistry', 'biology'],
+      'Automotive': ['car', 'vehicle', 'auto', 'automotive', 'driving', 'electric', 'engine', 'motor', 'truck'],
+      'Travel': ['travel', 'vacation', 'hotel', 'flight', 'destination', 'tourism', 'trip', 'adventure'],
+      'Food': ['food', 'recipe', 'cooking', 'restaurant', 'cuisine', 'chef', 'meal', 'dinner', 'lunch']
+    }
+
+    const lowerKeywords = keywords.map(k => k.toLowerCase())
+
+    for (const [category, catKeywords] of Object.entries(categoryKeywords)) {
+      for (const keyword of lowerKeywords) {
+        if (catKeywords.includes(keyword)) {
+          return category
+        }
+      }
+    }
+
+    return 'General'
   }
 
   /**

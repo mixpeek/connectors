@@ -1,7 +1,7 @@
 {
   "name": "@mixpeek/prebid",
-  "version": "1.0.0",
-  "description": "Mixpeek for Prebid.js - Enrich bid requests with real-time multimodal AI contextual data",
+  "version": "1.0.1",
+  "description": "Mixpeek RTD (Real-Time Data) Adapter for Prebid.js - Privacy-first contextual targeting with sub-100ms performance, ad adjacency awareness, and cookie-free bid enrichment",
   "main": "dist/mixpeekContextAdapter.js",
   "module": "src/modules/mixpeekContextAdapter.js",
   "scripts": {
@@ -37,14 +37,20 @@
   ],
   "keywords": [
     "prebid",
+    "rtd",
+    "real-time-data",
     "contextual",
     "advertising",
+    "header-bidding",
+    "cookie-free",
+    "privacy",
     "mixpeek",
     "ai",
     "multimodal",
     "iab",
     "taxonomy",
-    "brand-safety"
+    "brand-safety",
+    "adjacency"
   ],
   "author": "Mixpeek",
   "license": "Apache-2.0",

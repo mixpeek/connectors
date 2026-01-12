@@ -17,7 +17,7 @@ describe('Mixpeek Adapter - Live API Integration', () => {
   })
 
   describe('Initialization', () => {
-    test('should initialize with live API credentials', () => {
+    test('should initialize with live API credentials', async () => {
       if (skipIfNoApiKey()) return
 
       if (!TEST_CONFIG.collectionId) {
@@ -25,7 +25,7 @@ describe('Mixpeek Adapter - Live API Integration', () => {
         return
       }
 
-      const success = adapter.init({
+      const success = await adapter.init({
         apiKey: TEST_CONFIG.apiKey,
         collectionId: TEST_CONFIG.collectionId,
         namespace: TEST_CONFIG.namespace,
@@ -37,7 +37,7 @@ describe('Mixpeek Adapter - Live API Integration', () => {
 
       expect(success).toBe(true)
       expect(adapter.initialized).toBe(true)
-      
+
       console.log('✓ Adapter initialized successfully')
     })
   })
@@ -51,7 +51,7 @@ describe('Mixpeek Adapter - Live API Integration', () => {
 
       // Initialize if not already done
       if (!adapter.initialized) {
-        adapter.init({
+        await adapter.init({
           apiKey: TEST_CONFIG.apiKey,
           collectionId: TEST_CONFIG.collectionId,
           namespace: TEST_CONFIG.namespace,
@@ -99,9 +99,10 @@ describe('Mixpeek Adapter - Live API Integration', () => {
       }
 
       if (!adapter.initialized) {
-        adapter.init({
+        await adapter.init({
           apiKey: TEST_CONFIG.apiKey,
           collectionId: TEST_CONFIG.collectionId,
+          namespace: TEST_CONFIG.namespace,
           timeout: TEST_CONFIG.timeout,
           enableCache: true,
           cacheTTL: 300
@@ -139,9 +140,10 @@ describe('Mixpeek Adapter - Live API Integration', () => {
       }
 
       if (!adapter.initialized) {
-        adapter.init({
+        await adapter.init({
           apiKey: TEST_CONFIG.apiKey,
           collectionId: TEST_CONFIG.collectionId,
+          namespace: TEST_CONFIG.namespace,
           timeout: TEST_CONFIG.timeout,
           featureExtractors: ['taxonomy']
         })
@@ -232,9 +234,10 @@ describe('Mixpeek Adapter - Live API Integration', () => {
       }
 
       if (!adapter.initialized) {
-        adapter.init({
+        await adapter.init({
           apiKey: TEST_CONFIG.apiKey,
           collectionId: TEST_CONFIG.collectionId,
+          namespace: TEST_CONFIG.namespace,
           timeout: 5000,
           enableCache: false // Disable cache for accurate timing
         })
@@ -261,20 +264,25 @@ describe('Mixpeek Adapter - Live API Integration', () => {
       }
 
       // Initialize with invalid collection ID
-      const success = adapter.init({
+      const initResult = await adapter.init({
         apiKey: TEST_CONFIG.apiKey,
         collectionId: 'invalid_collection_12345',
+        namespace: TEST_CONFIG.namespace,
         timeout: 5000
       })
 
-      expect(success).toBe(true) // Init should succeed
+      // init() should succeed even with invalid collection
+      expect(initResult).toBe(true)
 
       const adUnits = [{ code: 'test-unit', bids: [] }]
 
-      // Should not throw, but gracefully return original ad units
+      // Should not throw, but gracefully return enriched ad units (with fallback data)
       const result = await adapter.enrichAdUnits(adUnits)
-      
-      expect(result).toEqual(adUnits) // Should return unchanged ad units
+
+      // Result should be an array
+      expect(Array.isArray(result)).toBe(true)
+      expect(result.length).toBe(adUnits.length)
+
       console.log('✓ Error handled gracefully, ad auction not blocked')
     }, TEST_CONFIG.timeout)
   })

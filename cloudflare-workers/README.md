@@ -23,6 +23,49 @@ Cached Content Profile (URL / ID)
 
 This is edge-based content intelligence as shared infrastructure. Ads are just the first, obvious consumer.
 
+## Cloudflare-Native Design
+
+This Worker is designed to run entirely within Cloudflare's edge environment:
+
+- **No client-side JavaScript required** - Analysis happens at the edge, not in the browser
+- **No impact on ad auction latency** - Profiles are pre-cached and served instantly
+- **First-party execution model** - Runs on your domain, under your control
+- **Cacheable, deterministic outputs** - Same URL always produces same profile
+- **KV-native caching** - Uses Cloudflare KV for global, low-latency storage
+
+Content analysis is performed once and reused across all downstream systems.
+
+## When Analysis Happens
+
+This Worker supports two modes:
+
+| Mode | When | Use Case |
+|------|------|----------|
+| **Pre-warmed** | On content publish/update via `/v1/analyze` | Production deployments |
+| **On-demand** | On first request, then cached | Development, long-tail content |
+
+Most production deployments **pre-warm on content publish** and serve cached profiles at request time. This ensures zero latency impact on page loads and ad auctions.
+
+```javascript
+// Pre-warm on publish (recommended)
+await fetch('https://your-worker.workers.dev/v1/analyze', {
+  method: 'POST',
+  body: JSON.stringify({ url: 'https://example.com/new-article' })
+});
+```
+
+## Non-Goals
+
+This Worker does **not**:
+
+- Make bid decisions or auction logic
+- Store user identifiers or cookies
+- Perform user-level tracking or profiling
+- Replace ad servers, DSPs, or SSPs
+- Execute client-side JavaScript
+
+It provides **content-level intelligence only** - understanding what the page is about, not who is viewing it.
+
 ## Features
 
 - **Edge-first**: Content analysis happens at the edge, close to users
@@ -68,7 +111,7 @@ npm run dev
 npm run deploy:production
 ```
 
-## API Reference
+## Endpoints
 
 ### POST /v1/analyze
 
@@ -334,10 +377,10 @@ async function onContentUpdate(url) {
 
 | Variable | Description | Default |
 |----------|-------------|---------|
-| `MIXPEEK_API_KEY` | Mixpeek API key (secret) | Required |
+| `MIXPEEK_API_KEY` | Mixpeek service key (secret) | Required |
 | `MIXPEEK_COLLECTION_ID` | Mixpeek collection ID | Required |
 | `MIXPEEK_NAMESPACE` | Mixpeek namespace | Optional |
-| `MIXPEEK_API_ENDPOINT` | Mixpeek API endpoint | `https://api.mixpeek.com` |
+| `MIXPEEK_API_ENDPOINT` | Mixpeek service endpoint | `https://api.mixpeek.com` |
 | `CACHE_TTL` | Cache TTL in seconds | `3600` |
 | `MAX_BATCH_SIZE` | Maximum batch size | `10` |
 | `CORS_ORIGIN` | CORS allowed origin | `*` |

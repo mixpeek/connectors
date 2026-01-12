@@ -1,0 +1,126 @@
+{
+  "name": "Mixpeek Demo Workflow",
+  "nodes": [
+    {
+      "parameters": {},
+      "id": "start",
+      "name": "Start",
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [250, 300]
+    },
+    {
+      "parameters": {
+        "resource": "namespace",
+        "operation": "list"
+      },
+      "id": "list-namespaces",
+      "name": "List Namespaces",
+      "type": "@mixpeek/n8n-nodes-mixpeek.mixpeek",
+      "typeVersion": 1,
+      "position": [450, 300],
+      "credentials": {
+        "mixpeekApi": {
+          "id": "",
+          "name": "Mixpeek API"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "collection",
+        "operation": "list"
+      },
+      "id": "list-collections",
+      "name": "List Collections",
+      "type": "@mixpeek/n8n-nodes-mixpeek.mixpeek",
+      "typeVersion": 1,
+      "position": [650, 200],
+      "credentials": {
+        "mixpeekApi": {
+          "id": "",
+          "name": "Mixpeek API"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "retriever",
+        "operation": "list"
+      },
+      "id": "list-retrievers",
+      "name": "List Retrievers",
+      "type": "@mixpeek/n8n-nodes-mixpeek.mixpeek",
+      "typeVersion": 1,
+      "position": [650, 400],
+      "credentials": {
+        "mixpeekApi": {
+          "id": "",
+          "name": "Mixpeek API"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "retriever",
+        "operation": "execute",
+        "retrieverId": "={{ $json.results[0].retriever_id }}",
+        "query": "example search query"
+      },
+      "id": "execute-search",
+      "name": "Execute Search",
+      "type": "@mixpeek/n8n-nodes-mixpeek.mixpeek",
+      "typeVersion": 1,
+      "position": [850, 400],
+      "credentials": {
+        "mixpeekApi": {
+          "id": "",
+          "name": "Mixpeek API"
+        }
+      }
+    }
+  ],
+  "connections": {
+    "Start": {
+      "main": [
+        [
+          {
+            "node": "List Namespaces",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "List Namespaces": {
+      "main": [
+        [
+          {
+            "node": "List Collections",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "List Retrievers",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "List Retrievers": {
+      "main": [
+        [
+          {
+            "node": "Execute Search",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1"
+  }
+}

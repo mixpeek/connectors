@@ -1,6 +1,6 @@
 {
   "name": "@mixpeek/openrtb",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "OpenRTB 2.5/2.6/3.0 reference implementation for contextual content enrichment with IAB Taxonomy 3.0 mapping",
   "type": "module",
   "main": "dist/index.js",

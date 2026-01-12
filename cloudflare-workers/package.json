@@ -1,0 +1,54 @@
+{
+  "name": "@mixpeek/cloudflare-workers",
+  "version": "1.0.0",
+  "description": "Mixpeek Content Intelligence Worker - Edge-based shared content intelligence layer for ads, analytics, and personalization",
+  "main": "src/index.js",
+  "type": "module",
+  "scripts": {
+    "dev": "wrangler dev",
+    "deploy": "wrangler deploy",
+    "deploy:staging": "wrangler deploy --env staging",
+    "deploy:production": "wrangler deploy --env production",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:coverage": "vitest run --coverage",
+    "lint": "eslint src tests",
+    "lint:fix": "eslint src tests --fix",
+    "typecheck": "tsc --noEmit"
+  },
+  "keywords": [
+    "cloudflare",
+    "workers",
+    "mixpeek",
+    "content-intelligence",
+    "contextual",
+    "advertising",
+    "analytics",
+    "iab-taxonomy",
+    "brand-safety",
+    "edge-computing",
+    "gam",
+    "openrtb",
+    "prebid"
+  ],
+  "author": "Mixpeek <support@mixpeek.com>",
+  "license": "Apache-2.0",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/mixpeek/connectors.git",
+    "directory": "cloudflare-workers"
+  },
+  "bugs": {
+    "url": "https://github.com/mixpeek/connectors/issues"
+  },
+  "homepage": "https://docs.mixpeek.com/integrations/cloudflare-workers",
+  "devDependencies": {
+    "@cloudflare/workers-types": "^4.20240117.0",
+    "eslint": "^8.56.0",
+    "vitest": "^1.2.0",
+    "wrangler": "^3.24.0"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}

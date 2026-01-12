@@ -1,0 +1,61 @@
+# Mixpeek Content Intelligence Worker
+# https://developers.cloudflare.com/workers/wrangler/configuration/
+
+name = "mixpeek-content-intelligence"
+main = "src/index.js"
+compatibility_date = "2024-01-15"
+compatibility_flags = ["nodejs_compat"]
+
+# KV Namespace for caching content profiles
+[[kv_namespaces]]
+binding = "CONTENT_PROFILES"
+id = "YOUR_KV_NAMESPACE_ID"  # Replace with your KV namespace ID
+preview_id = "YOUR_PREVIEW_KV_NAMESPACE_ID"  # Replace for local dev
+
+# Environment variables (use wrangler secret for sensitive values)
+[vars]
+MIXPEEK_API_ENDPOINT = "https://api.mixpeek.com"
+CACHE_TTL = "3600"
+MAX_BATCH_SIZE = "10"
+CORS_ORIGIN = "*"
+
+# Secrets (set via: wrangler secret put MIXPEEK_API_KEY)
+# MIXPEEK_API_KEY = "sk_..."
+# MIXPEEK_NAMESPACE = "your-namespace"
+# MIXPEEK_COLLECTION_ID = "your-collection-id"
+
+# Development environment
+[env.dev]
+name = "mixpeek-content-intelligence-dev"
+vars = { CACHE_TTL = "60", CORS_ORIGIN = "*" }
+
+# Staging environment
+[env.staging]
+name = "mixpeek-content-intelligence-staging"
+vars = { CACHE_TTL = "1800" }
+[[env.staging.kv_namespaces]]
+binding = "CONTENT_PROFILES"
+id = "YOUR_STAGING_KV_NAMESPACE_ID"
+
+# Production environment
+[env.production]
+name = "mixpeek-content-intelligence"
+vars = { CACHE_TTL = "3600" }
+routes = [
+  { pattern = "content-api.yourdomain.com/*", zone_name = "yourdomain.com" }
+]
+[[env.production.kv_namespaces]]
+binding = "CONTENT_PROFILES"
+id = "YOUR_PRODUCTION_KV_NAMESPACE_ID"
+
+# Build configuration
+[build]
+command = ""
+
+# Observability
+[observability]
+enabled = true
+
+# Limits
+[limits]
+cpu_ms = 50

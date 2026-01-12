@@ -197,7 +197,7 @@ function buildRetrieverRequest(ctx, index, operation, body) {
             const retrieverId = ctx.getNodeParameter('retrieverId', index);
             const query = ctx.getNodeParameter('query', index);
             const additionalFields = ctx.getNodeParameter('additionalFields', index);
-            Object.assign(body, { query }, additionalFields);
+            Object.assign(body, { inputs: { query } }, additionalFields);
             if (additionalFields.filters) {
                 body.filters = JSON.parse(additionalFields.filters);
             }
@@ -206,7 +206,7 @@ function buildRetrieverRequest(ctx, index, operation, body) {
         case 'explain': {
             const retrieverId = ctx.getNodeParameter('retrieverId', index);
             const query = ctx.getNodeParameter('query', index);
-            Object.assign(body, { query });
+            Object.assign(body, { inputs: { query } });
             return `/v1/retrievers/${retrieverId}/execute/explain`;
         }
         case 'list': {
@@ -397,8 +397,8 @@ class Mixpeek {
             defaults: {
                 name: 'Mixpeek',
             },
-            inputs: ['main'],
-            outputs: ['main'],
+            inputs: [n8n_workflow_1.NodeConnectionTypes.Main],
+            outputs: [n8n_workflow_1.NodeConnectionTypes.Main],
             credentials: [
                 {
                     name: 'mixpeekApi',

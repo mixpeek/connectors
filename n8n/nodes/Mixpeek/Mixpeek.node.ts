@@ -235,7 +235,7 @@ function buildRetrieverRequest(
 			const retrieverId = ctx.getNodeParameter('retrieverId', index) as string;
 			const query = ctx.getNodeParameter('query', index) as string;
 			const additionalFields = ctx.getNodeParameter('additionalFields', index) as IDataObject;
-			Object.assign(body, { query }, additionalFields);
+			Object.assign(body, { inputs: { query } }, additionalFields);
 			if (additionalFields.filters) {
 				body.filters = JSON.parse(additionalFields.filters as string);
 			}
@@ -244,7 +244,7 @@ function buildRetrieverRequest(
 		case 'explain': {
 			const retrieverId = ctx.getNodeParameter('retrieverId', index) as string;
 			const query = ctx.getNodeParameter('query', index) as string;
-			Object.assign(body, { query });
+			Object.assign(body, { inputs: { query } });
 			return `/v1/retrievers/${retrieverId}/execute/explain`;
 		}
 		case 'list': {

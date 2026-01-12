@@ -6,101 +6,128 @@ This guide provides step-by-step instructions for recording the verification dem
 
 Before recording:
 - Have your Mixpeek API key ready (from https://app.mixpeek.com)
-- Have some data in your Mixpeek account (namespaces, collections, retrievers)
+- Have a sample file to upload (image, video, or document)
 - Use screen recording software (Loom recommended)
 
-## Video Recording Steps
+## Video Recording Steps (~4-5 minutes)
 
 ### Step 1: Install the Node (30 seconds)
 
-1. Open your n8n instance
-2. Go to **Settings** > **Community Nodes**
+1. Open your n8n instance at http://localhost:5678
+2. Go to **Settings** (gear icon) → **Community Nodes**
 3. Click **Install a community node**
 4. Enter: `@mixpeek/n8n-nodes-mixpeek`
-5. Select version **1.0.4** (the version being verified)
-6. Click **Install**
-7. Wait for installation to complete
+5. Click **Install**
+6. Wait for installation to complete
 
-### Step 2: Create a New Workflow (15 seconds)
+### Step 2: Set Up Credentials (30 seconds)
 
-1. Click **Workflows** in the sidebar
-2. Click **Add Workflow** or **Create new workflow**
-3. Name it "Mixpeek Demo"
+1. Click **Credentials** in the sidebar
+2. Click **Add Credential**
+3. Search for "Mixpeek" and select **Mixpeek API**
+4. Enter your API Key from https://app.mixpeek.com
+5. Click **Test Connection** - show it succeeds
+6. Click **Save**
 
-### Step 3: Set Up Credentials (45 seconds)
+### Step 3: Create Workflow - Setup Resources (1-2 minutes)
 
-1. Click the **+** button to add a node
-2. Search for "Mixpeek" and select it
-3. Click on **Credential to connect with**
-4. Click **Create New Credential**
-5. Enter your Mixpeek API Key
-6. Leave Base URL as default (`https://api.mixpeek.com`)
-7. Click **Test Connection** - show it succeeds
-8. Click **Save**
+Create a new workflow called "Mixpeek Demo"
 
-### Step 4: Demo Core Functionality (2-3 minutes)
+#### 3a. Create a Bucket
+1. Add **Manual Trigger** node
+2. Add **Mixpeek** node, connect to trigger
+3. Configure:
+   - **Resource**: Bucket
+   - **Operation**: Create
+   - **Bucket Name**: "demo-bucket"
+4. Click **Test step** - show bucket created
 
-#### 4a. List Namespaces
-1. With Mixpeek node selected, set:
-   - **Resource**: Namespace
-   - **Operation**: List
-2. Click **Test step** - show the results
-
-#### 4b. List Collections
-1. Add another Mixpeek node
-2. Set:
+#### 3b. Create a Collection
+1. Add another **Mixpeek** node
+2. Configure:
    - **Resource**: Collection
-   - **Operation**: List
-3. Click **Test step** - show the results
+   - **Operation**: Create
+   - **Collection Name**: "demo-collection"
+   - **Additional Fields** → **Bucket ID**: (paste from previous step)
+3. Click **Test step** - show collection created
 
-#### 4c. Execute a Search (Main Feature)
-1. Add another Mixpeek node
-2. Set:
+### Step 4: Upload & Process Content (1 minute)
+
+#### 4a. Create Upload URL
+1. Add **Mixpeek** node
+2. Configure:
+   - **Resource**: Upload
+   - **Operation**: Create Presigned URL
+   - **Bucket ID**: (your bucket ID)
+   - **Filename**: "sample.jpg" (or your file)
+   - **Content Type**: "image/jpeg"
+3. Click **Test step** - show presigned URL returned
+
+#### 4b. Confirm Upload
+1. Add **Mixpeek** node
+2. Configure:
+   - **Resource**: Upload
+   - **Operation**: Confirm
+   - **Bucket ID**: (your bucket ID)
+   - **Upload ID**: (from previous step)
+3. Click **Test step** - show upload confirmed
+
+### Step 5: Search Content (1 minute)
+
+#### 5a. Create/Get Retriever
+1. Add **Mixpeek** node
+2. Configure:
+   - **Resource**: Retriever
+   - **Operation**: List (or Create if needed)
+3. Click **Test step** - show retrievers
+
+#### 5b. Execute Search
+1. Add **Mixpeek** node
+2. Configure:
    - **Resource**: Retriever
    - **Operation**: Execute
-   - **Retriever ID**: (paste a retriever ID from your account)
-   - **Query**: "your search query"
-3. Click **Test step** - show the search results
+   - **Retriever ID**: (your retriever ID)
+   - **Query**: "describe what's in the image" (or relevant query)
+3. Click **Test step** - **Show the search results!** (This is the key demo)
 
-#### 4d. Show Other Resources (Quick Overview)
-Briefly show the dropdown options for other resources:
-- Buckets
-- Documents
-- Uploads
-- Tasks
-- Taxonomies
-- Clusters
-- Webhooks
-- Inference
+### Step 6: AI Agent Integration (30 seconds)
 
-### Step 5: AI Agent Tool Demo (30 seconds)
-
-1. Add an **AI Agent** node to the workflow
-2. Add the Mixpeek node as a tool
-3. Show that it connects properly to the AI Agent
-4. (Optional) Run a quick test showing the agent using Mixpeek
+1. Add **AI Agent** node
+2. Add **OpenAI Chat Model** (or other LLM)
+3. Connect Mixpeek as a **Tool** to the agent
+4. Show the connection works
+5. (Optional) Quick test: "Search for images containing..."
 
 ## Sample Narration Script
 
 > "Hi, I'm demonstrating the Mixpeek community node for n8n.
 >
-> First, I'll install the node from npm - searching for @mixpeek/n8n-nodes-mixpeek version 1.0.4.
+> First, I'll install the node - searching for @mixpeek/n8n-nodes-mixpeek... installed.
 >
-> Now I'll create a new workflow and add the Mixpeek node.
+> Let me set up my credentials with my Mixpeek API key... testing connection... perfect, it works.
 >
-> Let me set up my credentials. I'll enter my API key from Mixpeek... and test the connection. Great, it's working.
+> Now I'll show a complete workflow. First, I'll create a bucket to store our content... done.
 >
-> Let me show the main functionality. First, I'll list my namespaces... Here are my namespaces.
+> Next, I'll create a collection - this is where Mixpeek processes and indexes our content... created.
 >
-> Now let's list collections... And here are my collections with their configurations.
+> Now let's upload some content. I'll get a presigned URL for my file... and confirm the upload. Mixpeek will now process this file and extract features for search.
 >
-> The main feature is semantic search using retrievers. I'll execute a search with a sample query... And here are the search results with relevance scores.
+> Here's the main feature - semantic search. I'll execute a search query on my retriever... and here are the results with relevance scores. Mixpeek found matching content based on the semantic meaning, not just keywords.
 >
-> The node supports all Mixpeek API resources - buckets, documents, uploads, tasks, taxonomies, clusters, webhooks, and inference.
+> Finally, this works as an AI agent tool. I'll connect Mixpeek to an AI Agent... and now the agent can search my multimodal content autonomously.
 >
-> Finally, let me show that this works as an AI agent tool. I'll add an AI Agent node and connect Mixpeek as a tool... It connects successfully and can be used by the agent for multimodal search.
->
-> That's the Mixpeek node for n8n. Thanks for watching!"
+> That's the Mixpeek node for n8n - enabling multimodal search in your workflows. Thanks!"
+
+## Quick Reference - Resource Flow
+
+```
+Namespace (optional)
+    └── Bucket (storage)
+           └── Upload (files)
+           └── Collection (indexed content)
+                  └── Documents (processed items)
+                         └── Retriever (search)
+```
 
 ## Tips for Recording
 
@@ -108,9 +135,6 @@ Briefly show the dropdown options for other resources:
 - Keep the video under 5 minutes
 - Don't include cuts - record in one take
 - Speak clearly if doing voiceover
-- Make sure your screen is clearly visible
+- Make sure results are clearly visible
 - Hide any sensitive data (API keys, personal info)
-
-## Demo Workflow
-
-You can import the included `mixpeek-demo-workflow.json` file to have a pre-built workflow structure, then just configure the credentials.
+- Have your Mixpeek account pre-populated with some data for faster demo

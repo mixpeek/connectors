@@ -1,0 +1,20 @@
+{
+  "taxonomy": "IAB Content Taxonomy 3.1",
+  "built_from": "sample data for the guide; build_reference.py writes this file from a Mixpeek collection",
+  "items": {
+    "content-12345": {
+      "content_id": "content-12345",
+      "categories": [
+        {"id": "210", "name": "Food & Drink"},
+        {"id": "216", "name": "Cooking"}
+      ]
+    },
+    "https://news.example.com/2026/10/home-remodel": {
+      "content_id": "article-home-remodel",
+      "categories": [
+        {"id": "274", "name": "Home & Garden"},
+        {"id": "276", "name": "Remodeling & Construction"}
+      ]
+    }
+  }
+}

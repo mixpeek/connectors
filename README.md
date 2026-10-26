@@ -18,6 +18,7 @@ This repository contains production-ready connectors that integrate Mixpeek's co
 | [GPT Targeting Helper](./google-ad-manager) | Client-side utility for generating Google Publisher Tag (GPT) custom targeting keys from contextual content signals. | ✅ Production | [README](./google-ad-manager/README.md) | v1.0.0 |
 | [Cloudflare Workers](./cloudflare-workers) | Edge-based shared content intelligence layer for ads, analytics, and personalization. Cached content profiles with GAM, OpenRTB, and Analytics output formats. | ✅ Production | [README](./cloudflare-workers/README.md) | v1.0.0 |
 | [n8n](./n8n) | n8n community node for Mixpeek multimodal data processing and semantic search. Supports namespaces, buckets, collections, documents, retrievers, inference, and more. | ✅ Production | [README](./n8n/README.md) | v1.0.0 |
+| [ARTF contextual agent](./artf-contextual-agent) | Sample IAB ARTF v1 agent container that adds IAB Content Taxonomy 3.1 category IDs to bid requests with an `ADD_CIDS` mutation, from a reference file built from a Mixpeek collection. | 🧪 Sample | [README](./artf-contextual-agent/README.md) | v0.1.0 |
 
 ## Getting Started
 

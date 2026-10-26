@@ -1,0 +1,17 @@
+{
+  "name": "mixpeek-iab-contextual",
+  "version": "0.1.0",
+  "description": "Proposes ADD_CIDS mutations carrying IAB Content Taxonomy 3.1 category IDs for known content, looked up in a read-only reference file built from a Mixpeek collection",
+  "vendor": "Mixpeek",
+  "owner": "ethan@mixpeek.com",
+  "resources": {"cpu": "250m", "memory": "128Mi"},
+  "intents": [
+    {"name": "metadataEnhancement", "description": "ADD_CIDS on /site/content/data and /app/content/data with IAB Content Taxonomy 3.1 segments"}
+  ],
+  "dependencies": {},
+  "health": {
+    "livenessProbe": {"httpGet": {"path": "/health/live", "port": 8080}, "initialDelaySeconds": 5, "periodSeconds": 5},
+    "readinessProbe": {"httpGet": {"path": "/health/ready", "port": 8080}, "initialDelaySeconds": 2, "periodSeconds": 5}
+  },
+  "security": {"runAsNonRoot": true, "dropCapabilities": ["NET_ADMIN", "SYS_PTRACE"], "networkPolicies": {"ingress": [], "egress": []}}
+}

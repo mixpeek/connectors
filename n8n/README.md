@@ -61,7 +61,7 @@ npm install @mixpeek/n8n-nodes-mixpeek
 
 ## Credentials
 
-Get your API key from [app.mixpeek.com](https://app.mixpeek.com).
+Get your API key from [studio.mixpeek.com](https://studio.mixpeek.com).
 
 1. In n8n: **Credentials** > **Add Credential**
 2. Search "Mixpeek API"

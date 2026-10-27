@@ -5,6 +5,7 @@ class MixpeekApi {
     constructor() {
         this.name = 'mixpeekApi';
         this.displayName = 'Mixpeek API';
+        this.icon = 'file:mixpeek.svg';
         this.documentationUrl = 'https://docs.mixpeek.com';
         this.properties = [
             {
@@ -14,7 +15,7 @@ class MixpeekApi {
                 typeOptions: { password: true },
                 default: '',
                 required: true,
-                description: 'Your Mixpeek API key. Get it from https://app.mixpeek.com',
+                description: 'Your Mixpeek API key. Get it from https://studio.mixpeek.com',
             },
             {
                 displayName: 'Base URL',

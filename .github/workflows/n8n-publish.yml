@@ -1,0 +1,38 @@
+# Publish the n8n node (n8n/) to npm with provenance.
+#
+# n8n verifies community nodes only when the npm release carries a provenance
+# attestation, and its scanner lints the source at the commit that attestation
+# names. This uses npm trusted publishing (GitHub OIDC), so no npm token is
+# stored here: on npmjs.com, @mixpeek/n8n-nodes-mixpeek > Settings > Trusted
+# Publisher names this repository and this workflow file.
+#
+# Run it from the Actions tab, or push a tag n8n-v<version> matching
+# n8n/package.json.
+name: Publish n8n node
+
+on:
+  workflow_dispatch:
+  push:
+    tags: ['n8n-v*']
+
+permissions:
+  contents: read
+  id-token: write
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: n8n
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          registry-url: https://registry.npmjs.org
+      # Trusted publishing needs npm 11.5.1 or newer.
+      - run: npm install -g npm@latest
+      - run: npm ci
+      - run: npm run build
+      - run: npm publish --provenance --access public

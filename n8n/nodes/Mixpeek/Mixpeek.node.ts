@@ -4,6 +4,8 @@ import {
 	INodeType,
 	INodeTypeDescription,
 	IDataObject,
+	JsonObject,
+	NodeApiError,
 	NodeOperationError,
 	IHttpRequestMethods,
 	NodeConnectionTypes,
@@ -472,6 +474,7 @@ export class Mixpeek implements INodeType {
 		},
 		inputs: [NodeConnectionTypes.Main],
 		outputs: [NodeConnectionTypes.Main],
+		usableAsTool: true,
 		credentials: [
 			{
 				name: 'mixpeekApi',
@@ -487,8 +490,8 @@ export class Mixpeek implements INodeType {
 				noDataExpression: true,
 				options: [
 					{ name: 'Bucket', value: 'bucket' },
-					{ name: 'Collection', value: 'collection' },
 					{ name: 'Cluster', value: 'cluster' },
+					{ name: 'Collection', value: 'collection' },
 					{ name: 'Document', value: 'document' },
 					{ name: 'Inference', value: 'inference' },
 					{ name: 'Namespace', value: 'namespace' },
@@ -903,13 +906,6 @@ export class Mixpeek implements INodeType {
 						default: '',
 					},
 					{
-						displayName: 'Stages (JSON)',
-						name: 'stages',
-						type: 'json',
-						default: '[]',
-						description: 'Retriever pipeline stages configuration',
-					},
-					{
 						displayName: 'Filters (JSON)',
 						name: 'filters',
 						type: 'json',
@@ -920,14 +916,24 @@ export class Mixpeek implements INodeType {
 						displayName: 'Limit',
 						name: 'limit',
 						type: 'number',
-						default: 10,
-						description: 'Maximum number of results',
+						typeOptions: {
+							minValue: 1,
+						},
+						default: 50,
+						description: 'Max number of results to return',
 					},
 					{
 						displayName: 'Namespace ID',
 						name: 'namespace_id',
 						type: 'string',
 						default: '',
+					},
+					{
+						displayName: 'Stages (JSON)',
+						name: 'stages',
+						type: 'json',
+						default: '[]',
+						description: 'Retriever pipeline stages configuration',
 					},
 				],
 			},
@@ -1360,11 +1366,11 @@ export class Mixpeek implements INodeType {
 				type: 'multiOptions',
 				options: [
 					{ name: 'Document Created', value: 'document.created' },
-					{ name: 'Document Updated', value: 'document.updated' },
 					{ name: 'Document Deleted', value: 'document.deleted' },
-					{ name: 'Upload Completed', value: 'upload.completed' },
+					{ name: 'Document Updated', value: 'document.updated' },
 					{ name: 'Task Completed', value: 'task.completed' },
 					{ name: 'Task Failed', value: 'task.failed' },
+					{ name: 'Upload Completed', value: 'upload.completed' },
 				],
 				default: [],
 				required: true,
@@ -1422,8 +1428,11 @@ export class Mixpeek implements INodeType {
 						displayName: 'Limit',
 						name: 'limit',
 						type: 'number',
+						typeOptions: {
+							minValue: 1,
+						},
 						default: 50,
-						description: 'Maximum number of items to return',
+						description: 'Max number of results to return',
 					},
 					{
 						displayName: 'Offset',
@@ -1523,24 +1532,27 @@ export class Mixpeek implements INodeType {
 				}
 
 				// Make the API request
-				const response = await this.helpers.httpRequest({
+				// The credential's authenticate block adds the Bearer header.
+				const response = await this.helpers.httpRequestWithAuthentication.call(this, 'mixpeekApi', {
 					method,
 					url: `${baseUrl}${endpoint}`,
 					body: Object.keys(body).length > 0 ? body : undefined,
 					headers: {
 						'Content-Type': 'application/json',
-						Authorization: `Bearer ${credentials.apiKey}`,
 					},
 					json: true,
 				});
 
-				returnData.push({ json: response as IDataObject });
+				returnData.push({ json: response as IDataObject, pairedItem: { item: i } });
 			} catch (error) {
 				if (this.continueOnFail()) {
-					returnData.push({ json: { error: (error as Error).message } });
+					returnData.push({ json: { error: (error as Error).message }, pairedItem: { item: i } });
 					continue;
 				}
-				throw error;
+				if (error instanceof NodeOperationError) {
+					throw new NodeOperationError(this.getNode(), error, { itemIndex: i });
+				}
+				throw new NodeApiError(this.getNode(), error as JsonObject);
 			}
 		}
 

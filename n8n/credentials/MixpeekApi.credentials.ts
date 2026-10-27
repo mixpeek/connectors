@@ -2,12 +2,14 @@ import {
 	IAuthenticateGeneric,
 	ICredentialTestRequest,
 	ICredentialType,
+	Icon,
 	INodeProperties,
 } from 'n8n-workflow';
 
 export class MixpeekApi implements ICredentialType {
 	name = 'mixpeekApi';
 	displayName = 'Mixpeek API';
+	icon: Icon = 'file:mixpeek.svg';
 	documentationUrl = 'https://docs.mixpeek.com';
 	properties: INodeProperties[] = [
 		{
@@ -17,7 +19,7 @@ export class MixpeekApi implements ICredentialType {
 			typeOptions: { password: true },
 			default: '',
 			required: true,
-			description: 'Your Mixpeek API key. Get it from https://app.mixpeek.com',
+			description: 'Your Mixpeek API key. Get it from https://studio.mixpeek.com',
 		},
 		{
 			displayName: 'Base URL',
